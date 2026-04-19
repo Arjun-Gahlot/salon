@@ -371,8 +371,6 @@ footer { text-align: center; padding: 40px 20px; background: #050506; color: var
 // ══════════════════════════════════════════════════════════════════
 const SUPA_URL = 'https://gkoedwhmcxccqyzhyrkk.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdrb2Vkd2htY3hjY3F5emh5cmtrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1MjYyOTIsImV4cCI6MjA5MjEwMjI5Mn0.Elzq82zFSb3OYsRATCBfZjjSmdFNSKbG9Pewz3dJZXI';
-const WA_NUM   = '919811333377'; 
-
 // ══════════════════════════════════════════════════════════════════
 //  STATE & DATA FETCHING logic remains exactly the same as original
 // ══════════════════════════════════════════════════════════════════
@@ -630,12 +628,21 @@ function initScrollSpy() {
   });
 }
 
+let WA_NUM = '15551547992'; // Fallback
+
 async function init() {
   try {
     const data = await fetchAllData();
     allSvc = data.services    || [];
     allPkg = data.packages    || [];
     allMem = data.memberships || [];
+    
+    if (data.settings && data.settings.bot_whatsapp_number) {
+      WA_NUM = data.settings.bot_whatsapp_number;
+    }
+    const urlParams = new URLSearchParams(window.location.search);
+    WA_NUM = urlParams.get('bot') || urlParams.get('phone') || WA_NUM;
+
     renderSvc(); renderPkg(); renderMem(); renderCustom();
     
     setTimeout(() => { initScrollAnimations(); initScrollSpy(); }, 100);
