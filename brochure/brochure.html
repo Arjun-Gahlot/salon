@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -370,7 +370,7 @@ footer { text-align: center; padding: 40px 20px; background: #050506; color: var
 //  CONFIG — fill in your project values
 // ══════════════════════════════════════════════════════════════════
 const SUPA_URL = 'https://gkoedwhmcxccqyzhyrkk.supabase.co';
-const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdrb2Vkd2htY3hjY3F5emh5cmtrIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NjUyNjI5MiwiZXhwIjoyMDkyMTAyMjkyfQ.fpj9m928Wz4igBaePBf0baS6cjbHg0Egp8kk0J7jqpc';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdrb2Vkd2htY3hjY3F5emh5cmtrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1MjYyOTIsImV4cCI6MjA5MjEwMjI5Mn0.Elzq82zFSb3OYsRATCBfZjjSmdFNSKbG9Pewz3dJZXI';
 const WA_NUM   = '919811333377'; 
 
 // ══════════════════════════════════════════════════════════════════
@@ -596,8 +596,7 @@ window.sendWA = function() {
   if (!sel.length) return;
   const total = sel.reduce((a, s) => a + s.price, 0);
   const dur   = sel.reduce((a, s) => a + s.duration_minutes, 0);
-  const lines = sel.map(s => `  • ${s.service_name} — ₹${s.price.toLocaleString('en-IN')}`).join('
-');
+  const lines = sel.map(s => `  • ${s.service_name} — ₹${s.price.toLocaleString('en-IN')}`).join('\n');
   const msg = `Hi! I'd like to book a custom session:
 
 ${lines}
