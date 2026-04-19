@@ -115,7 +115,7 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 700; }
 .ph h2 { font-size: 2.2rem; margin-bottom: 5px; }
 .ph p { font-size: 1rem; color: var(--ink3); }
 
-.frow { display: flex; gap: 8px; padding: 0 0 20px; overflow-x: auto; scrollbar-width: none; justify-content: center; }
+.frow { display: flex; gap: 8px; padding: 0 15px 20px; overflow-x: auto; scrollbar-width: none; }
 .frow::-webkit-scrollbar { display: none; }
 .chip {
   background: var(--card); border: 1px solid var(--bg3); color: var(--ink2);
@@ -177,7 +177,7 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 700; }
   background: rgba(0,0,0,0.4); /* Slight darkening for this section to separate it visually */
   border-top: 1px solid var(--bg3); border-bottom: 1px solid var(--bg3);
 }
-.tier-row { display: flex; gap: 10px; padding: 0 0 20px; overflow-x: auto; scrollbar-width: none; justify-content: center; }
+.tier-row { display: flex; gap: 10px; padding: 0 15px 20px; overflow-x: auto; scrollbar-width: none; }
 .tier-row::-webkit-scrollbar { display: none; }
 .tier-chip { background: var(--card); border: 2px solid var(--bg3); color: var(--ink2); padding: 10px 20px; border-radius: 25px; font-size: 0.9rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.2s; font-family: var(--font-heading); backdrop-filter: blur(10px); }
 .tier-chip[data-tier="essential"].active, .tier-chip[data-tier="essential"]:hover { background: rgba(62,189,139,0.2); border-color: var(--green); color: var(--green); }
@@ -279,7 +279,7 @@ footer { text-align: center; padding: 40px 20px; background: #050506; color: var
 .fade-up.visible { opacity: 1; transform: translateY(0); }
 
 /* ── RESPONSIVE MOBILE FIXES ── */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .ph h2 { font-size: 1.8rem; }
   .pkgs { grid-template-columns: 1fr; }
   .mems { grid-template-columns: 1fr; }
@@ -299,18 +299,18 @@ footer { text-align: center; padding: 40px 20px; background: #050506; color: var
 
 <!-- STICKY NAVBAR AT THE VERY TOP -->
 <div class="navbar" id="navbar">
-  <a href="#packages" class="nav-btn active">
+  <button onclick="scrollToSection('packages')" class="nav-btn active">
     <span class="nav-icon">🎁</span>Packages
-  </a>
-  <a href="#memberships" class="nav-btn">
+  </button>
+  <button onclick="scrollToSection('memberships')" class="nav-btn">
     <span class="nav-icon">💳</span>Memberships
-  </a>
-  <a href="#services" class="nav-btn">
+  </button>
+  <button onclick="scrollToSection('services')" class="nav-btn">
     <span class="nav-icon">✂️</span>Services
-  </a>
-  <a href="#custom" class="nav-btn">
+  </button>
+  <button onclick="scrollToSection('custom')" class="nav-btn">
     <span class="nav-icon">⚡</span>Build Custom
-  </a>
+  </button>
 </div>
 
 <!-- PACKAGES SECTION -->
@@ -630,6 +630,14 @@ function initScrollAnimations() {
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 }
 
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    const y = el.getBoundingClientRect().top + window.scrollY - 80;
+    window.scrollTo({top: y, behavior: 'smooth'});
+  }
+}
+
 function initScrollSpy() {
   const sections = document.querySelectorAll('.section-container, #custom');
   const navLinks = document.querySelectorAll('.nav-btn');
@@ -640,7 +648,9 @@ function initScrollSpy() {
     });
     navLinks.forEach(link => {
       link.classList.remove('active');
-      if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+      if (link.getAttribute('onclick') && link.getAttribute('onclick').includes(current)) {
+        link.classList.add('active');
+      }
     });
   });
 }
