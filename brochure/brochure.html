@@ -68,6 +68,7 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 700; }
 .glass-text {
   background: linear-gradient(135deg, #fff 0%, #a0a0a5 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -276,6 +277,22 @@ footer { text-align: center; padding: 40px 20px; background: #050506; color: var
 
 .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
 .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+/* ── RESPONSIVE MOBILE FIXES ── */
+@media (max-width: 480px) {
+  .ph h2 { font-size: 1.8rem; }
+  .pkgs { grid-template-columns: 1fr; }
+  .mems { grid-template-columns: 1fr; }
+  .svcs { grid-template-columns: 1fr; }
+  .cust-hdr h2 { font-size: 1.8rem; }
+  .cust-bar { padding: 12px 10px; }
+  .cust-total { font-size: 1.2rem; }
+  .wa-btn { padding: 10px 15px; font-size: 0.9rem; }
+  .pkg-name { font-size: 1.4rem; }
+  .pkg-final { font-size: 1.5rem; }
+  .mem-price { font-size: 1.5rem; }
+  .section-container { padding: 30px 10px; }
+}
 </style>
 </head>
 <body>
@@ -609,7 +626,7 @@ Please confirm my slot. 🙏`;
 function initScrollAnimations() {
   const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
+  }, { threshold: 0 }); // threshold 0 ensures even very tall grids fade in immediately
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 }
 
