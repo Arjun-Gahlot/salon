@@ -1,1 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>The Studio — Premium Services & Plans</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg: #0a0a0c;
+  --bg2: #141416;
+  --bg3: rgba(255,255,255,0.08);
+  --card: rgba(255,255,255,0.03); 
+  
+  --ink: #ffffff;
+  --ink2: #e0e0e0;
+  --ink3: #a0a0a5;
+  
+  --gold: #d4af37;
+  --gold-bg: rgba(212, 175, 55, 0.1);
+  --gold-border: rgba(212, 175, 55, 0.3);
+  --gold-glow: rgba(212, 175, 55, 0.2);
+  
+  --green: #3ebd8b;
+  --green-bg: rgba(62, 189, 139, 0.1);
+  --blue: #4a90e2;
+  --blue-bg: rgba(74, 144, 226, 0.1);
+  
+  --tab-h: 70px;
+  --r: 16px;
+  --sh: 0 4px 15px rgba(0,0,0,0.3);
+  --sh2: 0 10px 30px rgba(0,0,0,0.6);
+  
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
 
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior: smooth;}
+
+body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  background-color: var(--bg);
+  /* The top image is now the background for the entire site */
+  background-image: url('../brochure_site/images/hero_bg.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  margin: 0;
+}
+
+/* Dark overlay so the text remains readable over the background image */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(10, 10, 12, 0.85); /* Adjust opacity for darker/lighter */
+  z-index: -1;
+}
+
+h1, h2, h3 { font-family: var(--font-heading); font-weight: 700; }
+.glass-text {
+  background: linear-gradient(135deg, #fff 0%, #a0a0a5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ── STICKY NAVBAR ── */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  background: rgba(10, 10, 12, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--bg3);
+  height: var(--tab-h);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+.navbar::-webkit-scrollbar { display: none; }
+.nav-btn {
+  flex: 1; min-width: 80px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  background: none; border: none; border-bottom: 2px solid transparent;
+  cursor: pointer; padding: 0 10px;
+  font-family: var(--font-heading); font-size: 0.75rem; font-weight: 600;
+  color: var(--ink3); letter-spacing: 0.05em; text-transform: uppercase;
+  transition: all 0.2s; white-space: nowrap; text-decoration: none;
+}
+.nav-icon { font-size: 1.2rem; line-height: 1; }
+.nav-btn:hover { color: var(--ink); background: rgba(255,255,255,0.02); }
+.nav-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+/* ── CONTENT SECTIONS ── */
+.section-container {
+  padding: 40px 15px;
+  max-width: 1000px;
+  margin: 0 auto;
+  /* Fixes the issue where headings vanished behind the sticky navbar when clicking links */
+  scroll-margin-top: var(--tab-h);
+}
+
+.ph { margin-bottom: 30px; text-align: center; }
+.ph h2 { font-size: 2.2rem; margin-bottom: 5px; }
+.ph p { font-size: 1rem; color: var(--ink3); }
+
+.frow { display: flex; gap: 8px; padding: 0 0 20px; overflow-x: auto; scrollbar-width: none; justify-content: center; }
+.frow::-webkit-scrollbar { display: none; }
+.chip {
+  background: var(--card); border: 1px solid var(--bg3); color: var(--ink2);
+  padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;
+  letter-spacing: 0.04em; text-transform: uppercase; cursor: pointer; white-space: nowrap;
+  transition: all 0.2s; font-family: var(--font-heading);
+  backdrop-filter: blur(10px);
+}
+.chip.active, .chip:hover { background: var(--gold); border-color: var(--gold); color: #000; box-shadow: 0 0 15px var(--gold-glow); }
+
+.glass-card {
+  background: var(--card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--bg3);
+  border-radius: var(--r);
+  overflow: hidden;
+  box-shadow: var(--sh);
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+.glass-card::before {
+  content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: radial-gradient(circle at top right, rgba(255,255,255,0.05) 0%, transparent 60%);
+  pointer-events: none;
+}
+.glass-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: var(--sh2);
+}
+
+/* ── PACKAGES ── */
+.pkgs { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+.pkg-top { padding: 20px 20px 15px; position:relative; z-index:1; }
+.pkg-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.badge { font-size: 0.65rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; }
+.badge-rec { background: var(--green-bg); color: var(--green); border: 1px solid rgba(62,189,139,0.3); }
+.badge-hot { background: rgba(196, 81, 26, 0.1); color: #ff7e40; border: 1px solid rgba(196,81,26,0.3); }
+.badge-prem { background: var(--blue-bg); color: var(--blue); border: 1px solid rgba(74,144,226,0.3); }
+.badge-top { background: var(--gold-bg); color: var(--gold); border: 1px solid var(--gold-border); }
+.pkg-name { font-size: 1.6rem; font-weight: 700; color: var(--ink); margin-bottom: 5px; }
+.pkg-tagline { font-size: 0.9rem; color: var(--ink3); font-style: italic; margin-bottom: 15px; }
+.pkg-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 5px; }
+.pkg-chip { background: rgba(255,255,255,0.05); color: var(--ink2); font-size: 0.8rem; padding: 5px 10px; border-radius: 6px; border: 1px solid var(--bg3); }
+.pkg-bot { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: rgba(0,0,0,0.3); border-top: 1px solid var(--bg3); gap: 10px; position:relative; z-index:1;}
+.pkg-orig { font-size: 0.9rem; color: var(--ink3); text-decoration: line-through; }
+.pkg-final { font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800; color: var(--gold); line-height: 1; margin: 4px 0; }
+.pkg-save { font-size: 0.8rem; color: var(--green); font-weight: 600; }
+.pkg-dur { font-size: 0.85rem; color: var(--ink3); margin-top: 4px; }
+.pkg.premium-card { border-color: var(--gold-border); box-shadow: 0 0 20px var(--gold-glow); background: linear-gradient(145deg, rgba(212, 175, 55, 0.05) 0%, rgba(0,0,0,0) 100%); }
+
+.sel-btn { background: var(--gold); color: #000; border: none; padding: 10px 20px; border-radius: 25px; font-size: 0.9rem; font-weight: 700; cursor: pointer; font-family: var(--font-heading); white-space: nowrap; transition: all 0.2s; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 15px var(--gold-glow); }
+.sel-btn:hover { background: #e5c158; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4); }
+.sel-btn:active { transform: translateY(0); }
+
+/* ── MEMBERSHIPS ── */
+#memberships-wrapper {
+  background: rgba(0,0,0,0.4); /* Slight darkening for this section to separate it visually */
+  border-top: 1px solid var(--bg3); border-bottom: 1px solid var(--bg3);
+}
+.tier-row { display: flex; gap: 10px; padding: 0 0 20px; overflow-x: auto; scrollbar-width: none; justify-content: center; }
+.tier-row::-webkit-scrollbar { display: none; }
+.tier-chip { background: var(--card); border: 2px solid var(--bg3); color: var(--ink2); padding: 10px 20px; border-radius: 25px; font-size: 0.9rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.2s; font-family: var(--font-heading); backdrop-filter: blur(10px); }
+.tier-chip[data-tier="essential"].active, .tier-chip[data-tier="essential"]:hover { background: rgba(62,189,139,0.2); border-color: var(--green); color: var(--green); }
+.tier-chip[data-tier="elite"].active, .tier-chip[data-tier="elite"]:hover { background: rgba(74,144,226,0.2); border-color: var(--blue); color: var(--blue); }
+.tier-chip[data-tier="signature"].active, .tier-chip[data-tier="signature"]:hover { background: rgba(212,175,55,0.2); border-color: var(--gold); color: var(--gold); }
+
+.tier-pill { margin: 0 auto 25px; padding: 12px 20px; border-radius: 12px; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; max-width: max-content; background: rgba(255,255,255,0.05); border: 1px solid var(--bg3); backdrop-filter: blur(5px); }
+.tier-pill[data-tier="essential"] { border-color: rgba(62,189,139,0.3); }
+.tier-pill[data-tier="elite"] { border-color: rgba(74,144,226,0.3); }
+.tier-pill[data-tier="signature"] { border-color: rgba(212,175,55,0.3); }
+
+.mems { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+.mem { border-left: 5px solid; }
+.mem[data-tier="essential"] { border-left-color: var(--green); }
+.mem[data-tier="elite"] { border-left-color: var(--blue); }
+.mem[data-tier="signature"] { border-left-color: var(--gold); }
+.mem-in { padding: 20px; }
+.mem-dur { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 5px; }
+[data-tier="essential"] .mem-dur { color: var(--green); }
+[data-tier="elite"] .mem-dur { color: var(--blue); }
+[data-tier="signature"] .mem-dur { color: var(--gold); }
+.mem-name { font-size: 1.5rem; font-weight: 700; color: var(--ink); margin-bottom: 10px; }
+.mem-line { background: rgba(0,0,0,0.2); border-radius: 8px; padding: 10px 15px; font-size: 0.9rem; color: var(--ink2); margin-bottom: 15px; border: 1px solid var(--bg3); }
+.mem-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 5px; }
+.mtag { font-size: 0.8rem; padding: 4px 10px; border-radius: 6px; font-weight: 500; }
+.mtag-w { background: rgba(212,175,55,0.1); color: var(--gold); border: 1px solid var(--gold-border); }
+.mtag-b { background: rgba(62,189,139,0.1); color: var(--green); border: 1px solid rgba(62,189,139,0.3); }
+.mtag-f { background: rgba(255,255,255,0.05); color: var(--ink2); border: 1px solid var(--bg3); }
+.mem-bot { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: rgba(0,0,0,0.3); border-top: 1px solid var(--bg3); }
+.mem-price { font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800; color: var(--ink); }
+.mem-per { font-size: 0.85rem; color: var(--ink3); }
+
+/* ── SERVICES ── */
+.svcs { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+.svc { padding: 15px; display: flex; align-items: center; gap: 12px; }
+.svc-ico { width: 44px; height: 44px; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid var(--bg3); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+.svc-info { flex: 1; min-width: 0; }
+.svc-name { font-family: var(--font-heading); font-size: 1rem; font-weight: 500; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.svc-dur { font-size: 0.8rem; color: var(--ink3); margin-top: 2px; }
+.svc-price { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 600; color: var(--gold); flex-shrink: 0; }
+
+/* ── CUSTOM BUILDER ── */
+#custom { border-top: 1px solid var(--bg3); padding-bottom: 60px; scroll-margin-top: calc(var(--tab-h) - 1px); }
+.cust-hdr { padding: 40px 20px 20px; text-align: center; max-width: 800px; margin: 0 auto; }
+.cust-hdr h2 { font-size: 2.2rem; }
+.cust-hdr p { font-size: 1rem; color: var(--ink3); margin-top: 5px; }
+
+.cust-bar {
+  position: sticky; top: var(--tab-h); z-index: 90;
+  background: rgba(10, 10, 12, 0.95); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--bg3);
+  padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5); margin-bottom: 20px;
+}
+.cust-bar-inner { max-width: 1000px; width: 100%; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 10px;}
+.cust-count { font-size: 0.95rem; font-weight: 600; color: var(--ink); }
+.cust-total { font-family: var(--font-heading); font-size: 1.5rem; color: var(--gold); font-weight: 700; line-height: 1; margin: 4px 0;}
+.cust-dur { font-size: 0.85rem; color: var(--ink3); }
+
+.wa-btn {
+  background: #25D366; color: #fff; border: none;
+  padding: 12px 25px; border-radius: 25px; font-size: 1rem; font-weight: 600;
+  cursor: pointer; font-family: var(--font-heading);
+  display: flex; align-items: center; gap: 8px; white-space: nowrap; transition: all 0.2s;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+}
+.wa-btn:hover { background: #1ead53; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); }
+.wa-btn:disabled { background: rgba(255,255,255,0.1); color: var(--ink3); cursor: not-allowed; transform: none; box-shadow: none; }
+
+.cat-label { padding: 20px 15px 10px; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); max-width: 800px; margin: 0 auto; }
+.cust-list { display: flex; flex-direction: column; gap: 8px; max-width: 800px; margin: 0 auto 15px; padding: 0 15px;}
+
+.ci { padding: 15px; display: flex; align-items: center; gap: 15px; cursor: pointer; user-select: none; }
+.ci:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); }
+.ci.sel { border-color: var(--gold); background: rgba(212, 175, 55, 0.05); box-shadow: 0 0 0 1px var(--gold); }
+.ci-cb {
+  width: 24px; height: 24px; border-radius: 6px; border: 2px solid var(--bg3);
+  background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: all 0.2s; font-size: 0.9rem; color: #000; font-weight: 700;
+}
+.ci.sel .ci-cb { background: var(--gold); border-color: var(--gold); }
+.ci-ico { font-size: 1.3rem; flex-shrink: 0; }
+.ci-name { flex: 1; font-size: 1.05rem; font-weight: 500; color: var(--ink); }
+.ci-right { text-align: right; flex-shrink: 0; }
+.ci-price { font-family: var(--font-heading); font-size: 1.2rem; font-weight: 700; color: var(--gold); }
+.ci-dur { font-size: 0.85rem; color: var(--ink3); margin-top: 2px; }
+
+/* ── STATES & FOOTER ── */
+.loading-box { display: flex; align-items: center; justify-content: center; padding: 60px; flex-direction: column; gap: 15px; color: var(--ink3); font-size: 1rem; }
+.spinner { width: 40px; height: 40px; border: 3px solid var(--bg3); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.empty { text-align: center; padding: 60px 20px; color: var(--ink3); }
+.empty .ei { font-size: 3.5rem; margin-bottom: 15px; }
+.empty h3 { font-size: 1.2rem; color: var(--ink2); margin-bottom: 5px; }
+
+footer { text-align: center; padding: 40px 20px; background: #050506; color: var(--ink3); font-size: 0.9rem; border-top: 1px solid var(--bg3); }
+
+.fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- STICKY NAVBAR AT THE VERY TOP -->
+<div class="navbar" id="navbar">
+  <a href="#packages" class="nav-btn active">
+    <span class="nav-icon">🎁</span>Packages
+  </a>
+  <a href="#memberships" class="nav-btn">
+    <span class="nav-icon">💳</span>Memberships
+  </a>
+  <a href="#services" class="nav-btn">
+    <span class="nav-icon">✂️</span>Services
+  </a>
+  <a href="#custom" class="nav-btn">
+    <span class="nav-icon">⚡</span>Build Custom
+  </a>
+</div>
+
+<!-- PACKAGES SECTION -->
+<div id="packages" class="section-container">
+  <div class="ph fade-up"><h2 class="glass-text">Signature Packages</h2><p>Curated combinations for every occasion.</p></div>
+  <div class="frow fade-up" id="pkgFilters">
+    <button class="chip active" onclick="filterPkg('all',this)">All</button>
+    <button class="chip" onclick="filterPkg('hair',this)">💇 Hair</button>
+    <button class="chip" onclick="filterPkg('face',this)">✨ Face</button>
+    <button class="chip" onclick="filterPkg('grooming',this)">💅 Grooming</button>
+    <button class="chip" onclick="filterPkg('combo',this)">🔥 Combos</button>
+    <button class="chip" onclick="filterPkg('premium',this)">⭐ Premium</button>
+  </div>
+  <div class="pkgs fade-up" id="packagesGrid"><div class="loading-box"><div class="spinner"></div>Loading…</div></div>
+</div>
+
+<!-- MEMBERSHIPS SECTION -->
+<div id="memberships-wrapper">
+  <div id="memberships" class="section-container">
+      <div class="ph fade-up"><h2 class="glass-text">Exclusive Memberships</h2><p>Join the club. Save up to 22% on every visit.</p></div>
+      <div class="tier-row fade-up">
+        <button class="tier-chip active" data-tier="essential" onclick="filterMem('essential',this)">✦ Essential</button>
+        <button class="tier-chip" data-tier="elite" onclick="filterMem('elite',this)">◆ Elite</button>
+        <button class="tier-chip" data-tier="signature" onclick="filterMem('signature',this)">★ Signature</button>
+      </div>
+      <div class="tier-pill fade-up" id="tierPill" data-tier="essential">
+        <span id="tierPillIcon">🌿</span>
+        <span id="tierPillText">Basic cuts & trims — best value for regular grooming</span>
+      </div>
+      <div class="mems fade-up" id="membershipsGrid"><div class="loading-box"><div class="spinner"></div>Loading…</div></div>
+  </div>
+</div>
+
+<!-- SERVICES SECTION -->
+<div id="services" class="section-container">
+  <div class="ph fade-up"><h2 class="glass-text">A La Carte Services</h2><p>Individual treatments tailored for you.</p></div>
+  <div class="frow fade-up" id="svcFilters">
+    <button class="chip active" onclick="filterSvc('all',this)">All</button>
+    <button class="chip" onclick="filterSvc('hair',this)">💇 Hair</button>
+    <button class="chip" onclick="filterSvc('beard',this)">🪒 Beard</button>
+    <button class="chip" onclick="filterSvc('skin',this)">✨ Skin</button>
+    <button class="chip" onclick="filterSvc('body',this)">💅 Body</button>
+  </div>
+  <div class="svcs fade-up" id="servicesGrid"><div class="loading-box"><div class="spinner"></div>Loading…</div></div>
+</div>
+
+<!-- CUSTOM BUILDER SECTION -->
+<div id="custom">
+  <div class="cust-hdr fade-up">
+    <h2 class="glass-text">Build Your Package</h2>
+    <p>Select your preferred services and check out via WhatsApp.</p>
+  </div>
+  <div class="cust-bar">
+    <div class="cust-bar-inner">
+      <div class="cust-info">
+        <div class="cust-count" id="custCount">0 services selected</div>
+        <div class="cust-total" id="custTotal">₹0</div>
+        <div class="cust-dur" id="custDur"></div>
+      </div>
+      <button class="wa-btn" id="waBtn" onclick="sendWA()" disabled>
+        💬 Checkout
+      </button>
+    </div>
+  </div>
+  <div id="customList" class="fade-up"><div class="loading-box"><div class="spinner"></div>Loading…</div></div>
+</div>
+
+<footer>
+  <p>&copy; 2026 The Studio. All rights reserved.</p>
+</footer>
+
+<script>
+// ══════════════════════════════════════════════════════════════════
+//  CONFIG — fill in your project values
+// ══════════════════════════════════════════════════════════════════
+const SUPA_URL = 'https://gkoedwhmcxccqyzhyrkk.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdrb2Vkd2htY3hjY3F5emh5cmtrIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NjUyNjI5MiwiZXhwIjoyMDkyMTAyMjkyfQ.fpj9m928Wz4igBaePBf0baS6cjbHg0Egp8kk0J7jqpc';
+const WA_NUM   = '919811333377'; 
+
+// ══════════════════════════════════════════════════════════════════
+//  STATE & DATA FETCHING logic remains exactly the same as original
+// ══════════════════════════════════════════════════════════════════
+let allSvc = [], allPkg = [], allMem = [];
+let svcCat = 'all', pkgCat = 'all', memTier = 'essential';
+let picked = new Set();
+
+const CAT_MAP = {
+  hair:  ['Hair Spa','Hair Color','Head Oil Massage','Head Wash','Wash + Dryer','Hair Straightening','Hair Cut','Hair Smoothening','Scalp Treatment','Hair Protein Treatment','Keratin Treatment'],
+  beard: ['Beard Styling Premium','Beard Trim','Shaving'],
+  skin:  ['Bleach','Cleanup Basic','D-Tan Basic','D-Tan Premium','D-Tan Deluxe','Gold Facial','Fruit Facial','Anti Acne Facial','Charcoal Facial','Cleanup Premium','O3 Facial','Threading','Face Massage'],
+  body:  ['Pedicure','Manicure','Foot Massage']
+};
+const CAT_ORDER  = ['hair','beard','skin','body'];
+const CAT_LABELS = {hair:'💇 Hair',beard:'🪒 Beard & Shave',skin:'✨ Skin & Face',body:'💅 Hands & Feet'};
+const CAT_ICONS  = {hair:'💇',beard:'🪒',skin:'✨',body:'💅',other:'✂️'};
+
+const BADGE = {
+  recommended:    {cls:'badge-rec', txt:'★ Recommended'},
+  best_seller:    {cls:'badge-hot', txt:'🔥 Best Seller'},
+  premium_anchor: {cls:'badge-prem',txt:'◆ Premium'},
+  high_margin:    {cls:'badge-top', txt:'Top Pick'},
+  seasonal_push:  {cls:'badge-top', txt:'Trending'},
+};
+
+const TIER_INFO = {
+  essential: {icon:'🌿', txt:'Basic cuts & trims — best value for regular grooming'},
+  elite:     {icon:'💎', txt:'Premium services + wallet credits — for professionals'},
+  signature: {icon:'⭐', txt:'Full luxury experience — skin, hair & more, all covered'},
+};
+
+function getSvcCat(name) {
+  for (const [c, ns] of Object.entries(CAT_MAP))
+    if (ns.some(n => n.toLowerCase() === name.toLowerCase())) return c;
+  return 'other';
+}
+
+async function fetchAllData() {
+  const res = await fetch(`${SUPA_URL}/rest/v1/rpc/website_brochure_get_data`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY },
+    body: JSON.stringify({})
+  });
+  if (!res.ok) throw new Error(`RPC error ${res.status}: ${await res.text()}`);
+  return res.json(); 
+}
+
+// Render Functions
+function renderSvc() {
+  const grid = document.getElementById('servicesGrid');
+  const list = svcCat === 'all' ? allSvc : allSvc.filter(s => getSvcCat(s.service_name) === svcCat);
+  if (!list.length) { grid.innerHTML = `<div class="empty"><div class="ei">🔍</div><h3>Nothing here</h3></div>`; return; }
+  
+  grid.innerHTML = list.map(s => `
+    <div class="svc glass-card">
+      <div class="svc-ico">${CAT_ICONS[getSvcCat(s.service_name)] || '✂️'}</div>
+      <div class="svc-info">
+        <div class="svc-name">${s.service_name}</div>
+        <div class="svc-dur">⏱ ${s.duration_minutes} min</div>
+      </div>
+      <div class="svc-price">₹${s.price.toLocaleString('en-IN')}</div>
+    </div>`).join('');
+}
+window.filterSvc = function(cat, btn) {
+  svcCat = cat;
+  document.querySelectorAll('#svcFilters .chip').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderSvc();
+}
+
+function renderPkg() {
+  const grid = document.getElementById('packagesGrid');
+  const list = pkgCat === 'all' ? allPkg : allPkg.filter(p => p.category === pkgCat);
+  if (!list.length) { grid.innerHTML = `<div class="empty"><div class="ei">📦</div><h3>Nothing here</h3></div>`; return; }
+  
+  grid.innerHTML = list.map(p => {
+    const b = typeof p.brochure === 'string' ? JSON.parse(p.brochure) : (p.brochure || {});
+    const f = typeof p.sales_flags === 'string' ? JSON.parse(p.sales_flags) : (p.sales_flags || {});
+    const isPremium = (f?.tags || []).includes('premium_anchor');
+    const badges = (f?.tags || []).slice(0, 2).map(t => BADGE[t] ? `<span class="badge ${BADGE[t].cls}">${BADGE[t].txt}</span>` : '').join('');
+    const names = Array.isArray(p.service_names) ? p.service_names : [];
+    const waMsg = encodeURIComponent(`Hi! I'd like to book:
+
+*${p.package_name}*
+${names.join(', ')}
+Duration: ${p.total_duration_minutes} min
+Price: ₹${p.final_price.toLocaleString('en-IN')} (Save ${p.discount_percent}%)
+
+Please confirm. 🙏`);
+    
+    return `<div class="pkg glass-card ${isPremium ? 'premium-card' : ''}">
+      <div class="pkg-top">
+        ${badges ? `<div class="pkg-badges">${badges}</div>` : ''}
+        <div class="pkg-name glass-text">${p.package_name}</div>
+        <div class="pkg-tagline">${b?.tagline || ''}</div>
+        <div class="pkg-chips">${names.map(n => `<span class="pkg-chip">${n}</span>`).join('')}</div>
+      </div>
+      <div class="pkg-bot">
+        <div>
+          <div class="pkg-orig">₹${p.base_price.toLocaleString('en-IN')}</div>
+          <div class="pkg-final">₹${p.final_price.toLocaleString('en-IN')}</div>
+          <div class="pkg-save">Save ${p.discount_percent}%</div>
+          <div class="pkg-dur">⏱ ${p.total_duration_minutes} min</div>
+        </div>
+        <button class="sel-btn" onclick="window.open('https://wa.me/${WA_NUM}?text=${waMsg}','_blank')">💬 Book</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+window.filterPkg = function(cat, btn) {
+  pkgCat = cat;
+  document.querySelectorAll('#pkgFilters .chip').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderPkg();
+}
+
+function renderMem() {
+  const pill = document.getElementById('tierPill');
+  const info = TIER_INFO[memTier] || {icon:'•', txt:''};
+  pill.dataset.tier = memTier;
+  document.getElementById('tierPillIcon').textContent = info.icon;
+  document.getElementById('tierPillText').textContent  = info.txt;
+
+  const grid = document.getElementById('membershipsGrid');
+  const list = allMem.filter(m => m.tier === memTier);
+  if (!list.length) { grid.innerHTML = `<div class="empty"><div class="ei">💳</div><h3>No plans</h3></div>`; return; }
+  
+  grid.innerHTML = list.map(m => {
+    const waMsg = encodeURIComponent(`Hi! Interested in:
+
+*${m.membership_name}*
+${m.brochure_line}
+Duration: ${m.duration_months} month(s)
+Price: ₹${m.price.toLocaleString('en-IN')}` + (m.wallet_credits > 0 ? `
+Wallet: ₹${m.wallet_credits}` : '') + (m.bonus_description  ? `
+Bonus: ${m.bonus_description}` : '') + `
+
+Please help me enroll. 🙏`);
+    
+    return `<div class="mem glass-card" data-tier="${m.tier}">
+      <div class="mem-in">
+        <div class="mem-dur">${m.duration_months} Month${m.duration_months > 1 ? 's' : ''}</div>
+        <div class="mem-name glass-text">${m.membership_name}</div>
+        <div class="mem-line">${m.brochure_line}</div>
+        <div class="mem-tags">
+          ${m.wallet_credits > 0 ? `<span class="mtag mtag-w">💳 ₹${m.wallet_credits.toLocaleString('en-IN')} Wallet</span>` : ''}
+          ${m.bonus_description  ? `<span class="mtag mtag-b">🎁 ${m.bonus_description}</span>` : ''}
+          <span class="mtag mtag-f">For: ${m.best_for}</span>
+        </div>
+      </div>
+      <div class="mem-bot">
+        <div>
+          <div class="mem-price">₹${m.price.toLocaleString('en-IN')}</div>
+          <div class="mem-per">≈ ₹${Math.round(m.price / m.duration_months).toLocaleString('en-IN')}/month</div>
+        </div>
+        <button class="sel-btn" onclick="window.open('https://wa.me/${WA_NUM}?text=${waMsg}','_blank')">💬 Enroll</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+window.filterMem = function(tier, btn) {
+  memTier = tier;
+  document.querySelectorAll('.tier-chip').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderMem();
+}
+
+function renderCustom() {
+  const container = document.getElementById('customList');
+  if (!allSvc.length) { container.innerHTML = `<div class="empty"><div class="ei">⚡</div><h3>No services loaded</h3></div>`; return; }
+  const grouped = {};
+  CAT_ORDER.forEach(c => grouped[c] = []);
+  grouped['other'] = [];
+  allSvc.forEach(s => {
+    const c = getSvcCat(s.service_name);
+    if (!grouped[c]) grouped[c] = [];
+    grouped[c].push(s);
+  });
+
+  let html = '';
+  [...CAT_ORDER, 'other'].forEach(cat => {
+    if (!grouped[cat]?.length) return;
+    html += `<div class="cat-label">${CAT_LABELS[cat] || cat}</div><div class="cust-list">`;
+    grouped[cat].forEach(s => {
+      const sel = picked.has(s.id);
+      html += `<div class="ci glass-card${sel ? ' sel' : ''}" onclick="togglePick(${s.id})" id="ci-${s.id}">
+        <div class="ci-cb">${sel ? '✓' : ''}</div>
+        <span class="ci-ico">${CAT_ICONS[cat] || '✂️'}</span>
+        <div class="ci-name">${s.service_name}</div>
+        <div class="ci-right">
+          <div class="ci-price">₹${s.price.toLocaleString('en-IN')}</div>
+          <div class="ci-dur">${s.duration_minutes} min</div>
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  });
+  container.innerHTML = html;
+}
+
+window.togglePick = function(id) {
+  const el = document.getElementById('ci-' + id);
+  if (picked.has(id)) { picked.delete(id); el.classList.remove('sel'); el.querySelector('.ci-cb').textContent = ''; } 
+  else { picked.add(id); el.classList.add('sel'); el.querySelector('.ci-cb').textContent = '✓'; }
+  updateCustBar();
+}
+
+function updateCustBar() {
+  const sel = allSvc.filter(s => picked.has(s.id));
+  const total = sel.reduce((a, s) => a + s.price, 0);
+  const dur   = sel.reduce((a, s) => a + s.duration_minutes, 0);
+  const n     = sel.length;
+  document.getElementById('custCount').textContent = n === 0 ? 'No services selected' : `${n} service${n > 1 ? 's' : ''} selected`;
+  document.getElementById('custTotal').textContent = '₹' + total.toLocaleString('en-IN');
+  document.getElementById('custDur').textContent   = dur > 0 ? `⏱ ${dur} min` : '';
+  document.getElementById('waBtn').disabled = n === 0;
+}
+
+window.sendWA = function() {
+  const sel = allSvc.filter(s => picked.has(s.id));
+  if (!sel.length) return;
+  const total = sel.reduce((a, s) => a + s.price, 0);
+  const dur   = sel.reduce((a, s) => a + s.duration_minutes, 0);
+  const lines = sel.map(s => `  • ${s.service_name} — ₹${s.price.toLocaleString('en-IN')}`).join('
+');
+  const msg = `Hi! I'd like to book a custom session:
+
+${lines}
+
+Total: ₹${total.toLocaleString('en-IN')}
+Duration: ${dur} min
+
+Please confirm my slot. 🙏`;
+  window.open(`https://wa.me/${WA_NUM}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+function initScrollAnimations() {
+  const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+}
+
+function initScrollSpy() {
+  const sections = document.querySelectorAll('.section-container, #custom');
+  const navLinks = document.querySelectorAll('.nav-btn');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      if (window.scrollY >= section.offsetTop - 150) current = section.getAttribute('id');
+    });
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+    });
+  });
+}
+
+async function init() {
+  try {
+    const data = await fetchAllData();
+    allSvc = data.services    || [];
+    allPkg = data.packages    || [];
+    allMem = data.memberships || [];
+    renderSvc(); renderPkg(); renderMem(); renderCustom();
+    
+    setTimeout(() => { initScrollAnimations(); initScrollSpy(); }, 100);
+  } catch (e) {
+    console.error(e);
+    ['servicesGrid','packagesGrid','membershipsGrid','customList'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = `<div class="empty"><div class="ei">⚠️</div><h3>Load failed</h3><p>${e.message}</p></div>`;
+    });
+  }
+}
+
+init();
+</script>
+</body>
+</html>
