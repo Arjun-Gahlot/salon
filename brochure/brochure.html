@@ -37,7 +37,8 @@
 
 *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-html, body { width: 100dvw; max-width: 100dvw; overflow-x: hidden; }
+html { overflow-x: clip; } 
+body { width: 100dvw; max-width: 100dvw; overflow-x: clip; }
 
 body {
   font-family: var(--font-body);
@@ -728,10 +729,16 @@ function renderPkg(){
     </div>`;
   }).join('');
 }
+function scrollToSectionTop(sectionId){
+  if(!floatVisible)return;
+  const el=document.getElementById(sectionId==='memberships'?'memberships-wrapper':sectionId);
+  if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+}
 window.filterPkg=function(cat,btn){
   pkgCat=cat;
   syncChips('#pkgFilters','fp-packages',btn);
   renderPkg();
+  scrollToSectionTop('packages');
 };
 
 /* ── RENDER: SERVICES ── */
@@ -753,6 +760,7 @@ window.filterSvc=function(cat,btn){
   svcCat=cat;
   syncChips('#svcFilters','fp-services',btn);
   renderSvc();
+  scrollToSectionTop('services');
 };
 
 /* ── RENDER: MEMBERSHIPS ── */
@@ -792,6 +800,7 @@ window.filterMem=function(tier,btn){
   memTier=tier;
   syncTierChips(btn);
   renderMem();
+  scrollToSectionTop('memberships');
 };
 
 /* ── RENDER: CUSTOM ── */
