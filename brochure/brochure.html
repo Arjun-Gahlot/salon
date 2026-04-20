@@ -7,89 +7,80 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
-:root{
+:root {
   --bg: #0a0a0c;
-  --bg2: #141416;
   --bg3: rgba(255,255,255,0.08);
-  --card: rgba(255,255,255,0.03); 
-  
+  --card: rgba(255,255,255,0.03);
+
   --ink: #ffffff;
   --ink2: #e0e0e0;
   --ink3: #a0a0a5;
-  
+
   --gold: #d4af37;
-  --gold-bg: rgba(212, 175, 55, 0.1);
-  --gold-border: rgba(212, 175, 55, 0.3);
-  --gold-glow: rgba(212, 175, 55, 0.2);
-  
+  --gold-bg: rgba(212,175,55,0.1);
+  --gold-border: rgba(212,175,55,0.3);
+  --gold-glow: rgba(212,175,55,0.2);
+
   --green: #3ebd8b;
-  --green-bg: rgba(62, 189, 139, 0.1);
+  --green-bg: rgba(62,189,139,0.1);
   --blue: #4a90e2;
-  --blue-bg: rgba(74, 144, 226, 0.1);
-  
-  --tab-h: 70px;
+  --blue-bg: rgba(74,144,226,0.1);
+
+  --nav-h: 62px;
   --r: 16px;
   --sh: 0 4px 15px rgba(0,0,0,0.3);
   --sh2: 0 10px 30px rgba(0,0,0,0.6);
-  
+
   --font-heading: 'Outfit', sans-serif;
   --font-body: 'Inter', sans-serif;
 }
 
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-
-/* FIX: clamp root to dynamic viewport */
-html, body {
-  width: 100dvw;
-  max-width: 100dvw;
-  overflow-x: hidden;
-}
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+html, body { width: 100dvw; max-width: 100dvw; overflow-x: hidden; }
 
 body {
   font-family: var(--font-body);
-  font-weight: 400;
   color: var(--ink);
   display: flex;
   flex-direction: column;
   background-color: var(--bg);
-  background-image: url('images/hero_bg.png'); /* Restored to standard relative path for Github Pages */
+  background-image: url('images/hero_bg.png');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-  margin: 0;
 }
-
 body::before {
   content: '';
   position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(10, 10, 12, 0.85);
+  inset: 0;
+  background: rgba(10,10,12,0.85);
   z-index: -1;
 }
 
-h1, h2, h3 { font-family: var(--font-heading); font-weight: 700; }
+h1,h2,h3 { font-family: var(--font-heading); font-weight: 700; }
 .glass-text {
-  background: linear-gradient(135deg, #fff 0%, #a0a0a5 100%);
+  background: linear-gradient(135deg,#fff 0%,#a0a0a5 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* ── STICKY NAVBAR ── */
+/* ═══════════════════════════════════════
+   MAIN NAVBAR — always sticky at top
+═══════════════════════════════════════ */
 .navbar {
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 200;
   display: flex;
   flex-wrap: nowrap;
   width: 100dvw;
-  max-width: 100dvw;
-  background: rgba(10, 10, 12, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  height: var(--nav-h);
+  background: rgba(10,10,12,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--bg3);
-  height: var(--tab-h);
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: none;
@@ -99,9 +90,8 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 700; }
 .navbar::-webkit-scrollbar { display: none; }
 
 .nav-btn {
-  /* FIX: equal flex share, fluid font, max 25dvw per tab */
   flex: 1 1 0;
-  min-width: 0;           /* allow shrinking below content size */
+  min-width: 0;
   max-width: 25dvw;
   display: flex;
   flex-direction: column;
@@ -114,45 +104,131 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 700; }
   cursor: pointer;
   padding: 0 4px;
   font-family: var(--font-heading);
-  font-size: clamp(0.55rem, 2dvw, 0.75rem); /* FIX: fluid font */
+  font-size: clamp(0.55rem,2dvw,0.72rem);
   font-weight: 600;
   color: var(--ink3);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   transition: all 0.2s;
   white-space: nowrap;
-  text-decoration: none;
   overflow: hidden;
 }
-.nav-icon {
-  font-size: clamp(1rem, 4dvw, 1.2rem); /* FIX: fluid icon */
-  line-height: 1;
-}
-.nav-btn:hover { color: var(--ink); background: rgba(255,255,255,0.02); }
+.nav-icon { font-size: clamp(1rem,4dvw,1.2rem); line-height: 1; }
+.nav-btn:hover { color: var(--ink); }
 .nav-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
 
-/* ── CONTENT SECTIONS ── */
-.section-container {
-  padding: clamp(24px, 5dvw, 40px) clamp(10px, 4dvw, 20px);
-  width: 100%;
-  max-width: min(1000px, 100dvw);
-  margin: 0 auto;
-  box-sizing: border-box;
-  scroll-margin-top: var(--tab-h);
+/* ═══════════════════════════════════════
+   FLOATING FILTER BAR
+   Hidden by default. JS shows it when the
+   section's own filter row scrolls off-screen.
+   Replaced by next section's filters automatically.
+═══════════════════════════════════════ */
+.float-bar {
+  position: fixed;          /* fixed so it's always on screen */
+  top: var(--nav-h);
+  left: 0;
+  width: 100dvw;
+  z-index: 190;
+  background: rgba(12,12,14,0.96);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(212,175,55,0.2);
+  box-shadow: 0 3px 16px rgba(0,0,0,0.5);
+  /* Slide in from top */
+  transform: translateY(-110%);
+  transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+  pointer-events: none;
+}
+.float-bar.visible {
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
-.ph { margin-bottom: 30px; text-align: center; }
-.ph h2 { font-size: clamp(1.5rem, 6dvw, 2.2rem); margin-bottom: 5px; }
-.ph p { font-size: clamp(0.85rem, 3dvw, 1rem); color: var(--ink3); }
+/* Each panel inside float-bar */
+.float-panel {
+  display: none;
+  align-items: center;
+  height: 46px;
+  gap: 8px;
+  padding: 0 clamp(10px,4dvw,20px);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  white-space: nowrap;
+}
+.float-panel::-webkit-scrollbar { display: none; }
+.float-panel.active { display: flex; }
 
-/* FIX: chip rows bleed to full dvw using negative margins */
+.float-section-label {
+  font-family: var(--font-heading);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  padding-right: 10px;
+  border-right: 1px solid var(--bg3);
+  margin-right: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════
+   CHIP STYLES (shared inline + float-bar)
+═══════════════════════════════════════ */
+.chip {
+  background: var(--card);
+  border: 1px solid var(--bg3);
+  color: var(--ink2);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: clamp(0.68rem,2.4dvw,0.78rem);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.18s;
+  font-family: var(--font-heading);
+  backdrop-filter: blur(10px);
+}
+.chip.active,.chip:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #000;
+  box-shadow: 0 0 12px var(--gold-glow);
+}
+
+.tier-chip {
+  background: var(--card);
+  border: 2px solid var(--bg3);
+  color: var(--ink2);
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: clamp(0.68rem,2.4dvw,0.78rem);
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.18s;
+  font-family: var(--font-heading);
+}
+.tier-chip[data-tier="essential"].active,.tier-chip[data-tier="essential"]:hover { background: rgba(62,189,139,0.2); border-color: var(--green); color: var(--green); }
+.tier-chip[data-tier="elite"].active,.tier-chip[data-tier="elite"]:hover         { background: rgba(74,144,226,0.2); border-color: var(--blue);  color: var(--blue);  }
+.tier-chip[data-tier="signature"].active,.tier-chip[data-tier="signature"]:hover { background: rgba(212,175,55,0.2); border-color: var(--gold);  color: var(--gold);  }
+
+/* ═══════════════════════════════════════
+   INLINE FILTER ROWS (original position)
+═══════════════════════════════════════ */
 .frow {
   display: flex;
   gap: 8px;
-  padding: 0 clamp(10px, 4dvw, 20px) 20px;
+  padding: 0 clamp(10px,4dvw,20px) 20px;
   width: 100dvw;
   max-width: 100dvw;
-  margin-left: calc(-1 * clamp(10px, 4dvw, 20px));
+  margin-left: calc(-1 * clamp(10px,4dvw,20px));
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: none;
@@ -161,24 +237,36 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 700; }
 }
 .frow::-webkit-scrollbar { display: none; }
 
-.chip {
-  background: var(--card);
-  border: 1px solid var(--bg3);
-  color: var(--ink2);
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: clamp(0.72rem, 2.5dvw, 0.8rem);
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  cursor: pointer;
-  white-space: nowrap;
-  flex-shrink: 0;
-  transition: all 0.2s;
-  font-family: var(--font-heading);
-  backdrop-filter: blur(10px);
+.tier-row {
+  display: flex;
+  gap: 10px;
+  padding: 0 clamp(10px,4dvw,20px) 20px;
+  width: 100dvw;
+  max-width: 100dvw;
+  margin-left: calc(-1 * clamp(10px,4dvw,20px));
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
 }
-.chip.active, .chip:hover { background: var(--gold); border-color: var(--gold); color: #000; box-shadow: 0 0 15px var(--gold-glow); }
+.tier-row::-webkit-scrollbar { display: none; }
+
+/* ═══════════════════════════════════════
+   SECTION CONTAINERS
+═══════════════════════════════════════ */
+.section-container {
+  padding: clamp(24px,5dvw,40px) clamp(10px,4dvw,20px);
+  width: 100%;
+  max-width: min(1000px,100dvw);
+  margin: 0 auto;
+  box-sizing: border-box;
+  scroll-margin-top: var(--nav-h);
+}
+
+.ph { margin-bottom: 24px; text-align: center; }
+.ph h2 { font-size: clamp(1.5rem,6dvw,2.2rem); margin-bottom: 5px; }
+.ph p  { font-size: clamp(0.85rem,3dvw,1rem); color: var(--ink3); }
 
 .glass-card {
   background: var(--card);
@@ -192,295 +280,208 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 700; }
   position: relative;
 }
 .glass-card::before {
-  content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  content: ''; position: absolute; inset: 0;
   background: radial-gradient(circle at top right, rgba(255,255,255,0.05) 0%, transparent 60%);
   pointer-events: none;
 }
-.glass-card:hover {
-  transform: translateY(-5px);
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: var(--sh2);
-}
+.glass-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.2); box-shadow: var(--sh2); }
 
 /* ── PACKAGES ── */
-.pkgs { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); gap: 20px; width: 100%; }
+.pkgs { display: grid; grid-template-columns: repeat(auto-fill,minmax(min(320px,100%),1fr)); gap: 20px; width: 100%; }
 .pkg-top { padding: 20px 20px 15px; position:relative; z-index:1; }
 .pkg-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
 .badge { font-size: 0.65rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; }
-.badge-rec { background: var(--green-bg); color: var(--green); border: 1px solid rgba(62,189,139,0.3); }
-.badge-hot { background: rgba(196, 81, 26, 0.1); color: #ff7e40; border: 1px solid rgba(196,81,26,0.3); }
-.badge-prem { background: var(--blue-bg); color: var(--blue); border: 1px solid rgba(74,144,226,0.3); }
-.badge-top { background: var(--gold-bg); color: var(--gold); border: 1px solid var(--gold-border); }
-.pkg-name { font-size: clamp(1.2rem, 5dvw, 1.6rem); font-weight: 700; color: var(--ink); margin-bottom: 5px; }
+.badge-rec  { background: var(--green-bg); color: var(--green); border: 1px solid rgba(62,189,139,0.3); }
+.badge-hot  { background: rgba(196,81,26,0.1); color: #ff7e40; border: 1px solid rgba(196,81,26,0.3); }
+.badge-prem { background: var(--blue-bg);  color: var(--blue);  border: 1px solid rgba(74,144,226,0.3); }
+.badge-top  { background: var(--gold-bg);  color: var(--gold);  border: 1px solid var(--gold-border); }
+.pkg-name    { font-size: clamp(1.2rem,5dvw,1.6rem); font-weight: 700; color: var(--ink); margin-bottom: 5px; }
 .pkg-tagline { font-size: 0.9rem; color: var(--ink3); font-style: italic; margin-bottom: 15px; }
-.pkg-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 5px; }
-.pkg-chip { background: rgba(255,255,255,0.05); color: var(--ink2); font-size: 0.8rem; padding: 5px 10px; border-radius: 6px; border: 1px solid var(--bg3); }
+.pkg-chips   { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 5px; }
+.pkg-chip    { background: rgba(255,255,255,0.05); color: var(--ink2); font-size: 0.8rem; padding: 5px 10px; border-radius: 6px; border: 1px solid var(--bg3); }
 .pkg-bot {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;           /* FIX: wrap on very narrow screens */
-  gap: 12px;
-  padding: 15px 20px;
-  background: rgba(0,0,0,0.3);
-  border-top: 1px solid var(--bg3);
-  position:relative;
-  z-index:1;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 12px; padding: 15px 20px;
+  background: rgba(0,0,0,0.3); border-top: 1px solid var(--bg3);
+  position:relative; z-index:1;
 }
-.pkg-orig { font-size: 0.9rem; color: var(--ink3); text-decoration: line-through; }
-.pkg-final { font-family: var(--font-heading); font-size: clamp(1.3rem, 5dvw, 1.8rem); font-weight: 800; color: var(--gold); line-height: 1; margin: 4px 0; }
-.pkg-save { font-size: 0.8rem; color: var(--green); font-weight: 600; }
-.pkg-dur { font-size: 0.85rem; color: var(--ink3); margin-top: 4px; }
-.pkg.premium-card { border-color: var(--gold-border); box-shadow: 0 0 20px var(--gold-glow); background: linear-gradient(145deg, rgba(212, 175, 55, 0.05) 0%, rgba(0,0,0,0) 100%); }
+.pkg-orig  { font-size: 0.9rem; color: var(--ink3); text-decoration: line-through; }
+.pkg-final { font-family: var(--font-heading); font-size: clamp(1.3rem,5dvw,1.8rem); font-weight: 800; color: var(--gold); line-height:1; margin: 4px 0; }
+.pkg-save  { font-size: 0.8rem; color: var(--green); font-weight: 600; }
+.pkg-dur   { font-size: 0.85rem; color: var(--ink3); margin-top: 4px; }
+.premium-card { border-color: var(--gold-border); box-shadow: 0 0 20px var(--gold-glow); background: linear-gradient(145deg,rgba(212,175,55,0.05) 0%,rgba(0,0,0,0) 100%); }
 
 .sel-btn {
-  background: var(--gold);
-  color: #000;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 25px;
-  font-size: clamp(0.8rem, 3dvw, 0.9rem);
-  font-weight: 700;
-  cursor: pointer;
-  font-family: var(--font-heading);
-  white-space: nowrap;
-  flex-shrink: 0;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  box-shadow: 0 4px 15px var(--gold-glow);
+  background: var(--gold); color: #000; border: none;
+  padding: 10px 18px; border-radius: 25px;
+  font-size: clamp(0.8rem,3dvw,0.9rem); font-weight: 700;
+  cursor: pointer; font-family: var(--font-heading);
+  white-space: nowrap; flex-shrink: 0;
+  display: flex; align-items: center; gap: 6px;
+  transition: all 0.2s; box-shadow: 0 4px 15px var(--gold-glow);
 }
-.sel-btn:hover { background: #e5c158; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4); }
+.sel-btn:hover { background: #e5c158; transform: translateY(-2px); }
 .sel-btn:active { transform: translateY(0); }
 
 /* ── MEMBERSHIPS ── */
-#memberships-wrapper {
-  background: rgba(0,0,0,0.4);
-  border-top: 1px solid var(--bg3);
-  border-bottom: 1px solid var(--bg3);
-  width: 100dvw;
-  max-width: 100dvw;
-}
+#memberships-wrapper { background: rgba(0,0,0,0.4); border-top: 1px solid var(--bg3); border-bottom: 1px solid var(--bg3); width: 100dvw; }
 
-/* FIX: tier row full-width scroll like frow */
-.tier-row {
-  display: flex;
-  gap: 10px;
-  width: 100dvw;
-  max-width: 100dvw;
-  padding: 0 clamp(10px, 4dvw, 20px) 20px;
-  margin-left: calc(-1 * clamp(10px, 4dvw, 20px));
-  overflow-x: auto;
-  overflow-y: hidden;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-  box-sizing: border-box;
-}
-.tier-row::-webkit-scrollbar { display: none; }
-
-.tier-chip {
-  background: var(--card);
-  border: 2px solid var(--bg3);
-  color: var(--ink2);
-  padding: 10px 20px;
-  border-radius: 25px;
-  font-size: clamp(0.82rem, 3dvw, 0.9rem);
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
-  flex-shrink: 0;
-  transition: all 0.2s;
-  font-family: var(--font-heading);
-  backdrop-filter: blur(10px);
-}
-.tier-chip[data-tier="essential"].active, .tier-chip[data-tier="essential"]:hover { background: rgba(62,189,139,0.2); border-color: var(--green); color: var(--green); }
-.tier-chip[data-tier="elite"].active, .tier-chip[data-tier="elite"]:hover { background: rgba(74,144,226,0.2); border-color: var(--blue); color: var(--blue); }
-.tier-chip[data-tier="signature"].active, .tier-chip[data-tier="signature"]:hover { background: rgba(212,175,55,0.2); border-color: var(--gold); color: var(--gold); }
-
-.tier-pill { margin: 0 auto 25px; padding: 12px 20px; border-radius: 12px; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; max-width: max-content; background: rgba(255,255,255,0.05); border: 1px solid var(--bg3); backdrop-filter: blur(5px); }
+.tier-pill { margin: 0 auto 20px; padding: 10px 18px; border-radius: 12px; font-size: 0.88rem; display: flex; align-items: center; gap: 10px; max-width: max-content; background: rgba(255,255,255,0.05); border: 1px solid var(--bg3); backdrop-filter: blur(5px); }
 .tier-pill[data-tier="essential"] { border-color: rgba(62,189,139,0.3); }
-.tier-pill[data-tier="elite"] { border-color: rgba(74,144,226,0.3); }
+.tier-pill[data-tier="elite"]     { border-color: rgba(74,144,226,0.3); }
 .tier-pill[data-tier="signature"] { border-color: rgba(212,175,55,0.3); }
 
-.mems { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); gap: 20px; width: 100%; }
+.mems { display: grid; grid-template-columns: repeat(auto-fill,minmax(min(320px,100%),1fr)); gap: 20px; width: 100%; }
 .mem { border-left: 5px solid; }
 .mem[data-tier="essential"] { border-left-color: var(--green); }
-.mem[data-tier="elite"] { border-left-color: var(--blue); }
+.mem[data-tier="elite"]     { border-left-color: var(--blue); }
 .mem[data-tier="signature"] { border-left-color: var(--gold); }
 .mem-in { padding: 20px; }
 .mem-dur { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 5px; }
 [data-tier="essential"] .mem-dur { color: var(--green); }
-[data-tier="elite"] .mem-dur { color: var(--blue); }
+[data-tier="elite"]     .mem-dur { color: var(--blue); }
 [data-tier="signature"] .mem-dur { color: var(--gold); }
-.mem-name { font-size: clamp(1.2rem, 5dvw, 1.5rem); font-weight: 700; color: var(--ink); margin-bottom: 10px; }
+.mem-name { font-size: clamp(1.2rem,5dvw,1.5rem); font-weight: 700; color: var(--ink); margin-bottom: 10px; }
 .mem-line { background: rgba(0,0,0,0.2); border-radius: 8px; padding: 10px 15px; font-size: 0.9rem; color: var(--ink2); margin-bottom: 15px; border: 1px solid var(--bg3); }
 .mem-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 5px; }
-.mtag { font-size: 0.8rem; padding: 4px 10px; border-radius: 6px; font-weight: 500; }
+.mtag   { font-size: 0.8rem; padding: 4px 10px; border-radius: 6px; font-weight: 500; }
 .mtag-w { background: rgba(212,175,55,0.1); color: var(--gold); border: 1px solid var(--gold-border); }
 .mtag-b { background: rgba(62,189,139,0.1); color: var(--green); border: 1px solid rgba(62,189,139,0.3); }
 .mtag-f { background: rgba(255,255,255,0.05); color: var(--ink2); border: 1px solid var(--bg3); }
-.mem-bot {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;           /* FIX */
-  gap: 12px;
-  padding: 15px 20px;
-  background: rgba(0,0,0,0.3);
-  border-top: 1px solid var(--bg3);
-}
-.mem-price { font-family: var(--font-heading); font-size: clamp(1.3rem, 5dvw, 1.8rem); font-weight: 800; color: var(--ink); }
-.mem-per { font-size: 0.85rem; color: var(--ink3); }
+.mem-bot { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 15px 20px; background: rgba(0,0,0,0.3); border-top: 1px solid var(--bg3); }
+.mem-price { font-family: var(--font-heading); font-size: clamp(1.3rem,5dvw,1.8rem); font-weight: 800; color: var(--ink); }
+.mem-per   { font-size: 0.85rem; color: var(--ink3); }
 
 /* ── SERVICES ── */
-.svcs { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap: 12px; width: 100%; }
+.svcs { display: grid; grid-template-columns: repeat(auto-fill,minmax(min(300px,100%),1fr)); gap: 12px; width: 100%; }
 .svc { padding: 15px; display: flex; align-items: center; gap: 12px; }
-.svc-ico { width: 44px; height: 44px; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid var(--bg3); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+.svc-ico  { width: 44px; height: 44px; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid var(--bg3); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
 .svc-info { flex: 1; min-width: 0; }
-.svc-name { font-family: var(--font-heading); font-size: clamp(0.9rem, 3dvw, 1rem); font-weight: 500; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.svc-dur { font-size: 0.8rem; color: var(--ink3); margin-top: 2px; }
-.svc-price { font-family: 'Playfair Display', serif; font-size: clamp(1.1rem, 4dvw, 1.3rem); font-weight: 600; color: var(--gold); flex-shrink: 0; }
+.svc-name  { font-family: var(--font-heading); font-size: clamp(0.9rem,3dvw,1rem); font-weight: 500; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.svc-dur   { font-size: 0.8rem; color: var(--ink3); margin-top: 2px; }
+.svc-price { font-family: 'Playfair Display', serif; font-size: clamp(1.1rem,4dvw,1.3rem); font-weight: 600; color: var(--gold); flex-shrink: 0; }
 
 /* ── CUSTOM BUILDER ── */
-#custom { border-top: 1px solid var(--bg3); padding-bottom: 60px; scroll-margin-top: calc(var(--tab-h) - 1px); }
-.cust-hdr { padding: 40px 20px 20px; text-align: center; max-width: 800px; margin: 0 auto; }
-.cust-hdr h2 { font-size: clamp(1.5rem, 6dvw, 2.2rem); }
-.cust-hdr p { font-size: clamp(0.85rem, 3dvw, 1rem); color: var(--ink3); margin-top: 5px; }
+#custom { border-top: 1px solid var(--bg3); padding-bottom: 60px; scroll-margin-top: var(--nav-h); }
+.cust-hdr { padding: 36px 20px 20px; text-align: center; max-width: 800px; margin: 0 auto; }
+.cust-hdr h2 { font-size: clamp(1.5rem,6dvw,2.2rem); }
+.cust-hdr p  { font-size: clamp(0.85rem,3dvw,1rem); color: var(--ink3); margin-top: 5px; }
 
-/* FIX: sticky bar spans full dvw */
 .cust-bar {
   position: sticky;
-  top: var(--tab-h);
-  z-index: 90;
-  width: 100dvw;
-  max-width: 100dvw;
-  left: 0;
-  background: rgba(10, 10, 12, 0.95);
+  top: var(--nav-h);
+  z-index: 180;
+  width: 100dvw; max-width: 100dvw;
+  background: rgba(10,10,12,0.97);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--bg3);
-  padding: 12px clamp(10px, 4dvw, 20px);
+  padding: 10px clamp(10px,4dvw,20px);
   box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   box-sizing: border-box;
 }
-.cust-bar-inner {
-  max-width: min(1000px, 100%);
-  width: 100%;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-.cust-count { font-size: clamp(0.82rem, 3dvw, 0.95rem); font-weight: 600; color: var(--ink); }
-.cust-total { font-family: var(--font-heading); font-size: clamp(1.2rem, 5dvw, 1.5rem); color: var(--gold); font-weight: 700; line-height: 1; margin: 4px 0; }
-.cust-dur { font-size: 0.85rem; color: var(--ink3); }
+.cust-bar-inner { max-width: min(1000px,100%); width: 100%; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.cust-count { font-size: clamp(0.78rem,3dvw,0.92rem); font-weight: 600; color: var(--ink); }
+.cust-total { font-family: var(--font-heading); font-size: clamp(1.1rem,5dvw,1.4rem); color: var(--gold); font-weight: 700; line-height: 1; margin: 3px 0; }
+.cust-dur   { font-size: 0.82rem; color: var(--ink3); }
 
 .wa-btn {
-  background: #25D366;
-  color: #fff;
-  border: none;
-  padding: 11px clamp(14px, 4dvw, 25px);
-  border-radius: 25px;
-  font-size: clamp(0.82rem, 3dvw, 1rem);
-  font-weight: 600;
-  cursor: pointer;
-  font-family: var(--font-heading);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  white-space: nowrap;
-  flex-shrink: 0;
-  transition: all 0.2s;
-  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+  background: #25D366; color: #fff; border: none;
+  padding: 10px clamp(14px,4dvw,22px); border-radius: 25px;
+  font-size: clamp(0.8rem,3dvw,0.95rem); font-weight: 600;
+  cursor: pointer; font-family: var(--font-heading);
+  display: flex; align-items: center; gap: 6px;
+  white-space: nowrap; flex-shrink: 0; transition: all 0.2s;
+  box-shadow: 0 4px 15px rgba(37,211,102,0.3);
 }
-.wa-btn:hover { background: #1ead53; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); }
+.wa-btn:hover { background: #1ead53; transform: translateY(-2px); }
 .wa-btn:disabled { background: rgba(255,255,255,0.1); color: var(--ink3); cursor: not-allowed; transform: none; box-shadow: none; }
 
-.cat-label {
-  padding: 20px clamp(10px, 4dvw, 20px) 10px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--gold);
-  max-width: 800px;
-  margin: 0 auto;
-}
-.cust-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  max-width: 800px;
-  margin: 0 auto 15px;
-  padding: 0 clamp(10px, 4dvw, 20px);
-  box-sizing: border-box;
-}
+.cat-label { padding: 18px clamp(10px,4dvw,20px) 8px; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); max-width: 800px; margin: 0 auto; }
+.cust-list { display: flex; flex-direction: column; gap: 8px; max-width: 800px; margin: 0 auto 12px; padding: 0 clamp(10px,4dvw,20px); box-sizing: border-box; }
 
-.ci { padding: 15px; display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+.ci { padding: 14px; display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
 .ci:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); }
-.ci.sel { border-color: var(--gold); background: rgba(212, 175, 55, 0.05); box-shadow: 0 0 0 1px var(--gold); }
-.ci-cb {
-  width: 24px; height: 24px; border-radius: 6px; border: 2px solid var(--bg3);
-  background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; transition: all 0.2s; font-size: 0.9rem; color: #000; font-weight: 700;
-}
+.ci.sel   { border-color: var(--gold); background: rgba(212,175,55,0.05); box-shadow: 0 0 0 1px var(--gold); }
+.ci-cb { width: 24px; height: 24px; border-radius: 6px; border: 2px solid var(--bg3); background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; font-size: 0.9rem; color: #000; font-weight: 700; }
 .ci.sel .ci-cb { background: var(--gold); border-color: var(--gold); }
-.ci-ico { font-size: 1.3rem; flex-shrink: 0; }
-.ci-name { flex: 1; min-width: 0; font-size: clamp(0.9rem, 3.5dvw, 1.05rem); font-weight: 500; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ci-ico   { font-size: 1.3rem; flex-shrink: 0; }
+.ci-name  { flex: 1; min-width: 0; font-size: clamp(0.88rem,3.5dvw,1.05rem); font-weight: 500; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ci-right { text-align: right; flex-shrink: 0; }
-.ci-price { font-family: var(--font-heading); font-size: clamp(1rem, 4dvw, 1.2rem); font-weight: 700; color: var(--gold); }
-.ci-dur { font-size: 0.85rem; color: var(--ink3); margin-top: 2px; }
+.ci-price { font-family: var(--font-heading); font-size: clamp(1rem,4dvw,1.2rem); font-weight: 700; color: var(--gold); }
+.ci-dur   { font-size: 0.82rem; color: var(--ink3); margin-top: 2px; }
 
 /* ── STATES & FOOTER ── */
-.loading-box { display: flex; align-items: center; justify-content: center; padding: 60px; flex-direction: column; gap: 15px; color: var(--ink3); font-size: 1rem; }
+.loading-box { display: flex; align-items: center; justify-content: center; padding: 60px; flex-direction: column; gap: 15px; color: var(--ink3); }
 .spinner { width: 40px; height: 40px; border: 3px solid var(--bg3); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .empty { text-align: center; padding: 60px 20px; color: var(--ink3); }
 .empty .ei { font-size: 3.5rem; margin-bottom: 15px; }
-.empty h3 { font-size: 1.2rem; color: var(--ink2); margin-bottom: 5px; }
+.empty h3  { font-size: 1.2rem; color: var(--ink2); margin-bottom: 5px; }
 
 footer { text-align: center; padding: 40px 20px; background: #050506; color: var(--ink3); font-size: 0.9rem; border-top: 1px solid var(--bg3); }
 
-.fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
 .fade-up.visible { opacity: 1; transform: translateY(0); }
 
-/* ── MOBILE ── */
 @media (max-width: 480px) {
-  :root { --tab-h: 62px; }
-
-  .nav-btn {
-    font-size: 0.58rem;
-    padding: 0 3px;
-    gap: 2px;
-  }
+  :root { --nav-h: 58px; }
+  .nav-btn { font-size: 0.56rem; padding: 0 3px; gap: 2px; }
   .nav-icon { font-size: 1rem; }
 }
 </style>
 </head>
 <body>
 
-<!-- STICKY NAVBAR AT THE VERY TOP -->
-<div class="navbar" id="navbar">
-  <button onclick="scrollToSection('packages')" class="nav-btn active">
-    <span class="nav-icon">🎁</span>Packages
-  </button>
-  <button onclick="scrollToSection('memberships')" class="nav-btn">
-    <span class="nav-icon">💳</span>Memberships
-  </button>
-  <button onclick="scrollToSection('services')" class="nav-btn">
-    <span class="nav-icon">✂️</span>Services
-  </button>
-  <button onclick="scrollToSection('custom')" class="nav-btn">
-    <span class="nav-icon">⚡</span>Build Custom
-  </button>
+<!-- ══ MAIN NAVBAR ══ -->
+<nav class="navbar" id="navbar">
+  <button onclick="navClick('packages')"    class="nav-btn active" data-section="packages"><span class="nav-icon">🎁</span>Packages</button>
+  <button onclick="navClick('memberships')" class="nav-btn" data-section="memberships"><span class="nav-icon">💳</span>Memberships</button>
+  <button onclick="navClick('services')"    class="nav-btn" data-section="services"><span class="nav-icon">✂️</span>Services</button>
+  <button onclick="navClick('custom')"      class="nav-btn" data-section="custom"><span class="nav-icon">⚡</span>Build Custom</button>
+</nav>
+
+<!-- ══ FLOATING FILTER BAR (slides in below navbar when inline filters scroll away) ══ -->
+<div class="float-bar" id="floatBar">
+
+  <div class="float-panel" id="fp-packages">
+    <span class="float-section-label">Packages</span>
+    <button class="chip active" onclick="filterPkg('all',this)">All</button>
+    <button class="chip" onclick="filterPkg('hair',this)">💇 Hair</button>
+    <button class="chip" onclick="filterPkg('face',this)">✨ Face</button>
+    <button class="chip" onclick="filterPkg('grooming',this)">💅 Grooming</button>
+    <button class="chip" onclick="filterPkg('combo',this)">🔥 Combos</button>
+    <button class="chip" onclick="filterPkg('premium',this)">⭐ Premium</button>
+  </div>
+
+  <div class="float-panel" id="fp-memberships">
+    <span class="float-section-label">Tier</span>
+    <button class="tier-chip active" data-tier="essential" onclick="filterMem('essential',this)">✦ Essential</button>
+    <button class="tier-chip" data-tier="elite"            onclick="filterMem('elite',this)">◆ Elite</button>
+    <button class="tier-chip" data-tier="signature"        onclick="filterMem('signature',this)">★ Signature</button>
+  </div>
+
+  <div class="float-panel" id="fp-services">
+    <span class="float-section-label">Services</span>
+    <button class="chip active" onclick="filterSvc('all',this)">All</button>
+    <button class="chip" onclick="filterSvc('hair',this)">💇 Hair</button>
+    <button class="chip" onclick="filterSvc('beard',this)">🪒 Beard</button>
+    <button class="chip" onclick="filterSvc('skin',this)">✨ Skin</button>
+    <button class="chip" onclick="filterSvc('body',this)">💅 Body</button>
+  </div>
+
+  <div class="float-panel" id="fp-custom">
+    <span class="float-section-label">Build Custom</span>
+    <span id="floatPickCount" style="font-size:0.78rem;color:var(--ink3);">Pick services below ↓</span>
+  </div>
+
 </div>
 
-<!-- PACKAGES SECTION -->
+<!-- ══ PACKAGES ══ -->
 <div id="packages" class="section-container">
   <div class="ph fade-up"><h2 class="glass-text">Signature Packages</h2><p>Curated combinations for every occasion.</p></div>
-  <div class="frow fade-up" id="pkgFilters">
+  <!-- inline filter row — this is what we track -->
+  <div class="frow fade-up" id="pkgFilters" data-float-panel="packages">
     <button class="chip active" onclick="filterPkg('all',this)">All</button>
     <button class="chip" onclick="filterPkg('hair',this)">💇 Hair</button>
     <button class="chip" onclick="filterPkg('face',this)">✨ Face</button>
@@ -491,27 +492,29 @@ footer { text-align: center; padding: 40px 20px; background: #050506; color: var
   <div class="pkgs fade-up" id="packagesGrid"><div class="loading-box"><div class="spinner"></div>Loading…</div></div>
 </div>
 
-<!-- MEMBERSHIPS SECTION -->
+<!-- ══ MEMBERSHIPS ══ -->
 <div id="memberships-wrapper">
   <div id="memberships" class="section-container">
-      <div class="ph fade-up"><h2 class="glass-text">Exclusive Memberships</h2><p>Join the club. Save up to 22% on every visit.</p></div>
-      <div class="tier-row fade-up">
-        <button class="tier-chip active" data-tier="essential" onclick="filterMem('essential',this)">✦ Essential</button>
-        <button class="tier-chip" data-tier="elite" onclick="filterMem('elite',this)">◆ Elite</button>
-        <button class="tier-chip" data-tier="signature" onclick="filterMem('signature',this)">★ Signature</button>
-      </div>
-      <div class="tier-pill fade-up" id="tierPill" data-tier="essential">
-        <span id="tierPillIcon">🌿</span>
-        <span id="tierPillText">Basic cuts & trims — best value for regular grooming</span>
-      </div>
-      <div class="mems fade-up" id="membershipsGrid"><div class="loading-box"><div class="spinner"></div>Loading…</div></div>
+    <div class="ph fade-up"><h2 class="glass-text">Exclusive Memberships</h2><p>Join the club. Save up to 22% on every visit.</p></div>
+    <!-- inline filter row -->
+    <div class="tier-row fade-up" id="memFilters" data-float-panel="memberships">
+      <button class="tier-chip active" data-tier="essential" onclick="filterMem('essential',this)">✦ Essential</button>
+      <button class="tier-chip" data-tier="elite"            onclick="filterMem('elite',this)">◆ Elite</button>
+      <button class="tier-chip" data-tier="signature"        onclick="filterMem('signature',this)">★ Signature</button>
+    </div>
+    <div class="tier-pill fade-up" id="tierPill" data-tier="essential">
+      <span id="tierPillIcon">🌿</span>
+      <span id="tierPillText">Basic cuts &amp; trims — best value for regular grooming</span>
+    </div>
+    <div class="mems fade-up" id="membershipsGrid"><div class="loading-box"><div class="spinner"></div>Loading…</div></div>
   </div>
 </div>
 
-<!-- SERVICES SECTION -->
+<!-- ══ SERVICES ══ -->
 <div id="services" class="section-container">
   <div class="ph fade-up"><h2 class="glass-text">A La Carte Services</h2><p>Individual treatments tailored for you.</p></div>
-  <div class="frow fade-up" id="svcFilters">
+  <!-- inline filter row -->
+  <div class="frow fade-up" id="svcFilters" data-float-panel="services">
     <button class="chip active" onclick="filterSvc('all',this)">All</button>
     <button class="chip" onclick="filterSvc('hair',this)">💇 Hair</button>
     <button class="chip" onclick="filterSvc('beard',this)">🪒 Beard</button>
@@ -521,7 +524,7 @@ footer { text-align: center; padding: 40px 20px; background: #050506; color: var
   <div class="svcs fade-up" id="servicesGrid"><div class="loading-box"><div class="spinner"></div>Loading…</div></div>
 </div>
 
-<!-- CUSTOM BUILDER SECTION -->
+<!-- ══ CUSTOM BUILDER ══ -->
 <div id="custom">
   <div class="cust-hdr fade-up">
     <h2 class="glass-text">Build Your Package</h2>
@@ -529,109 +532,189 @@ footer { text-align: center; padding: 40px 20px; background: #050506; color: var
   </div>
   <div class="cust-bar">
     <div class="cust-bar-inner">
-      <div class="cust-info">
-        <div class="cust-count" id="custCount">0 services selected</div>
+      <div>
+        <div class="cust-count" id="custCount">No services selected</div>
         <div class="cust-total" id="custTotal">₹0</div>
-        <div class="cust-dur" id="custDur"></div>
+        <div class="cust-dur"   id="custDur"></div>
       </div>
-      <button class="wa-btn" id="waBtn" onclick="sendWA()" disabled>
-        💬 Checkout
-      </button>
+      <button class="wa-btn" id="waBtn" onclick="sendWA()" disabled>💬 Checkout</button>
     </div>
   </div>
   <div id="customList" class="fade-up"><div class="loading-box"><div class="spinner"></div>Loading…</div></div>
 </div>
 
-<footer>
-  <p>&copy; 2026 The Studio. All rights reserved.</p>
-</footer>
+<footer><p>&copy; 2026 The Studio. All rights reserved.</p></footer>
 
 <script>
+/* ── CONFIG ── */
 const SUPA_URL = 'https://gkoedwhmcxccqyzhyrkk.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdrb2Vkd2htY3hjY3F5emh5cmtrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1MjYyOTIsImV4cCI6MjA5MjEwMjI5Mn0.Elzq82zFSb3OYsRATCBfZjjSmdFNSKbG9Pewz3dJZXI';
+let WA_NUM = '15551547992';
 
-let allSvc = [], allPkg = [], allMem = [];
-let svcCat = 'all', pkgCat = 'all', memTier = 'essential';
-let picked = new Set();
+/* ── STATE ── */
+let allSvc=[], allPkg=[], allMem=[];
+let svcCat='all', pkgCat='all', memTier='essential';
+let picked=new Set();
 
-const CAT_MAP = {
-  hair:  ['Hair Spa','Hair Color','Head Oil Massage','Head Wash','Wash + Dryer','Hair Straightening','Hair Cut','Hair Smoothening','Scalp Treatment','Hair Protein Treatment','Keratin Treatment'],
-  beard: ['Beard Styling Premium','Beard Trim','Shaving'],
-  skin:  ['Bleach','Cleanup Basic','D-Tan Basic','D-Tan Premium','D-Tan Deluxe','Gold Facial','Fruit Facial','Anti Acne Facial','Charcoal Facial','Cleanup Premium','O3 Facial','Threading','Face Massage'],
-  body:  ['Pedicure','Manicure','Foot Massage']
+const CAT_MAP={
+  hair: ['Hair Spa','Hair Color','Head Oil Massage','Head Wash','Wash + Dryer','Hair Straightening','Hair Cut','Hair Smoothening','Scalp Treatment','Hair Protein Treatment','Keratin Treatment'],
+  beard:['Beard Styling Premium','Beard Trim','Shaving'],
+  skin: ['Bleach','Cleanup Basic','D-Tan Basic','D-Tan Premium','D-Tan Deluxe','Gold Facial','Fruit Facial','Anti Acne Facial','Charcoal Facial','Cleanup Premium','O3 Facial','Threading','Face Massage'],
+  body: ['Pedicure','Manicure','Foot Massage']
 };
-const CAT_ORDER  = ['hair','beard','skin','body'];
-const CAT_LABELS = {hair:'💇 Hair',beard:'🪒 Beard & Shave',skin:'✨ Skin & Face',body:'💅 Hands & Feet'};
-const CAT_ICONS  = {hair:'💇',beard:'🪒',skin:'✨',body:'💅',other:'✂️'};
-
-const BADGE = {
-  recommended:    {cls:'badge-rec', txt:'★ Recommended'},
-  best_seller:    {cls:'badge-hot', txt:'🔥 Best Seller'},
-  premium_anchor: {cls:'badge-prem',txt:'◆ Premium'},
-  high_margin:    {cls:'badge-top', txt:'Top Pick'},
-  seasonal_push:  {cls:'badge-top', txt:'Trending'},
+const CAT_ORDER =['hair','beard','skin','body'];
+const CAT_LABELS={hair:'💇 Hair',beard:'🪒 Beard & Shave',skin:'✨ Skin & Face',body:'💅 Hands & Feet'};
+const CAT_ICONS ={hair:'💇',beard:'🪒',skin:'✨',body:'💅',other:'✂️'};
+const BADGE={
+  recommended:   {cls:'badge-rec', txt:'★ Recommended'},
+  best_seller:   {cls:'badge-hot', txt:'🔥 Best Seller'},
+  premium_anchor:{cls:'badge-prem',txt:'◆ Premium'},
+  high_margin:   {cls:'badge-top', txt:'Top Pick'},
+  seasonal_push: {cls:'badge-top', txt:'Trending'},
+};
+const TIER_INFO={
+  essential:{icon:'🌿',txt:'Basic cuts & trims — best value for regular grooming'},
+  elite:    {icon:'💎',txt:'Premium services + wallet credits — for professionals'},
+  signature:{icon:'⭐',txt:'Full luxury experience — skin, hair & more, all covered'},
 };
 
-const TIER_INFO = {
-  essential: {icon:'🌿', txt:'Basic cuts & trims — best value for regular grooming'},
-  elite:     {icon:'💎', txt:'Premium services + wallet credits — for professionals'},
-  signature: {icon:'⭐', txt:'Full luxury experience — skin, hair & more, all covered'},
-};
-
-function getSvcCat(name) {
-  for (const [c, ns] of Object.entries(CAT_MAP))
-    if (ns.some(n => n.toLowerCase() === name.toLowerCase())) return c;
+function getSvcCat(name){
+  for(const[c,ns]of Object.entries(CAT_MAP))
+    if(ns.some(n=>n.toLowerCase()===name.toLowerCase()))return c;
   return 'other';
 }
 
-async function fetchAllData() {
-  const res = await fetch(`${SUPA_URL}/rest/v1/rpc/website_brochure_get_data`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY },
-    body: JSON.stringify({})
+/* ════════════════════════════════════════════════
+   FLOATING FILTER BAR LOGIC
+
+   How it works:
+   - Each section has an inline filter row with
+     data-float-panel="sectionId"
+   - On scroll we use IntersectionObserver to detect
+     when that row goes ABOVE the navbar top.
+   - When it disappears upward → show float-bar with
+     the matching panel.
+   - When it comes back into view → hide float-bar.
+   - We also track which section is "current" to show
+     the right panel even when scrolling between sections
+     where no filter row is momentarily in view.
+════════════════════════════════════════════════ */
+
+const floatBar = document.getElementById('floatBar');
+const SECTION_ORDER = ['packages','memberships','services','custom'];
+
+// Track visibility of each inline filter row
+const rowVisible = { packages:true, memberships:true, services:true, custom:true };
+let currentSection = 'packages';
+let floatVisible = false;
+
+function showFloatPanel(sectionId) {
+  // Swap panel
+  document.querySelectorAll('.float-panel').forEach(p=>p.classList.remove('active'));
+  const fp = document.getElementById('fp-'+sectionId);
+  if(fp) fp.classList.add('active');
+}
+
+function refreshFloatBar() {
+  // Determine the current section (topmost one past nav)
+  const navH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'))||62;
+  let cur = SECTION_ORDER[0];
+  for(const id of SECTION_ORDER){
+    const el = document.getElementById(id==='memberships'?'memberships-wrapper':id) || document.getElementById(id);
+    if(el && el.getBoundingClientRect().top <= navH+10) cur = id;
+  }
+  if(cur!==currentSection){
+    currentSection = cur;
+    showFloatPanel(cur);
+    // Sync nav highlight
+    document.querySelectorAll('.nav-btn').forEach(b=>
+      b.classList.toggle('active', b.dataset.section===cur)
+    );
+  }
+
+  // Show float-bar only when the current section's inline row is scrolled away
+  const shouldShow = !rowVisible[currentSection];
+  if(shouldShow !== floatVisible){
+    floatVisible = shouldShow;
+    floatBar.classList.toggle('visible', shouldShow);
+  }
+}
+
+// Observe all inline filter rows
+function initFilterObserver(){
+  const navH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'))||62;
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      const panelId = e.target.dataset.floatPanel;
+      if(panelId){
+        // isIntersecting = row visible in viewport; we only care about top edge
+        // Use rootMargin to trigger when top of row crosses nav bottom
+        rowVisible[panelId] = e.isIntersecting;
+        refreshFloatBar();
+      }
+    });
+  },{
+    root: null,
+    // Shrink top of viewport by nav height so "intersecting" means below nav
+    rootMargin: `-${Math.round(navH)}px 0px 0px 0px`,
+    threshold: 0
   });
-  if (!res.ok) throw new Error(`RPC error ${res.status}: ${await res.text()}`);
-  return res.json(); 
+
+  document.querySelectorAll('[data-float-panel]').forEach(el=>obs.observe(el));
+
+  // Custom section has no filter row, so use its heading as the trigger
+  const customEl = document.getElementById('custom');
+  if(customEl){
+    const customObs = new IntersectionObserver(entries=>{
+      entries.forEach(e=>{
+        rowVisible['custom'] = e.isIntersecting;
+        refreshFloatBar();
+      });
+    },{root:null, rootMargin:`-${Math.round(navH)}px 0px 0px 0px`, threshold:0});
+    customObs.observe(customEl);
+  }
 }
 
-function renderSvc() {
-  const grid = document.getElementById('servicesGrid');
-  const list = svcCat === 'all' ? allSvc : allSvc.filter(s => getSvcCat(s.service_name) === svcCat);
-  if (!list.length) { grid.innerHTML = `<div class="empty"><div class="ei">🔍</div><h3>Nothing here</h3></div>`; return; }
-  grid.innerHTML = list.map(s => `
-    <div class="svc glass-card">
-      <div class="svc-ico">${CAT_ICONS[getSvcCat(s.service_name)] || '✂️'}</div>
-      <div class="svc-info">
-        <div class="svc-name">${s.service_name}</div>
-        <div class="svc-dur">⏱ ${s.duration_minutes} min</div>
-      </div>
-      <div class="svc-price">₹${s.price.toLocaleString('en-IN')}</div>
-    </div>`).join('');
+/* ── KEEP filter chips in sync: inline ↔ float-bar ── */
+// When a filter chip is clicked in either place, sync both rows
+function syncChips(panelSelector, floatPanelId, clickedBtn){
+  document.querySelectorAll(`${panelSelector} .chip, #${floatPanelId} .chip`).forEach(b=>b.classList.remove('active'));
+  // Find matching button in both rows by text content and activate
+  const label = clickedBtn.textContent.trim();
+  document.querySelectorAll(`${panelSelector} .chip, #${floatPanelId} .chip`).forEach(b=>{
+    if(b.textContent.trim()===label) b.classList.add('active');
+  });
 }
-window.filterSvc = function(cat, btn) {
-  svcCat = cat;
-  document.querySelectorAll('#svcFilters .chip').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderSvc();
+function syncTierChips(clickedBtn){
+  const tier = clickedBtn.dataset.tier;
+  document.querySelectorAll('.tier-chip').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll(`.tier-chip[data-tier="${tier}"]`).forEach(b=>b.classList.add('active'));
 }
 
-function renderPkg() {
-  const grid = document.getElementById('packagesGrid');
-  const list = pkgCat === 'all' ? allPkg : allPkg.filter(p => p.category === pkgCat);
-  if (!list.length) { grid.innerHTML = `<div class="empty"><div class="ei">📦</div><h3>Nothing here</h3></div>`; return; }
-  grid.innerHTML = list.map(p => {
-    const b = typeof p.brochure === 'string' ? JSON.parse(p.brochure) : (p.brochure || {});
-    const f = typeof p.sales_flags === 'string' ? JSON.parse(p.sales_flags) : (p.sales_flags || {});
-    const isPremium = (f?.tags || []).includes('premium_anchor');
-    const badges = (f?.tags || []).slice(0, 2).map(t => BADGE[t] ? `<span class="badge ${BADGE[t].cls}">${BADGE[t].txt}</span>` : '').join('');
-    const names = Array.isArray(p.service_names) ? p.service_names : [];
-    const waMsg = encodeURIComponent(`Hi! I'd like to book:\n\n*${p.package_name}*\n${names.join(', ')}\nDuration: ${p.total_duration_minutes} min\nPrice: ₹${p.final_price.toLocaleString('en-IN')} (Save ${p.discount_percent}%)\n\nPlease confirm. 🙏`);
-    return `<div class="pkg glass-card ${isPremium ? 'premium-card' : ''}">
+/* ── NAV CLICK ── */
+window.navClick = function(id){
+  const el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+};
+
+/* ── RENDER: PACKAGES ── */
+function renderPkg(){
+  const grid=document.getElementById('packagesGrid');
+  const list=pkgCat==='all'?allPkg:allPkg.filter(p=>p.category===pkgCat);
+  if(!list.length){grid.innerHTML=`<div class="empty"><div class="ei">📦</div><h3>Nothing here</h3></div>`;return;}
+  grid.innerHTML=list.map(p=>{
+    const b=typeof p.brochure==='string'?JSON.parse(p.brochure):(p.brochure||{});
+    const f=typeof p.sales_flags==='string'?JSON.parse(p.sales_flags):(p.sales_flags||{});
+    const isPremium=(f?.tags||[]).includes('premium_anchor');
+    const badges=(f?.tags||[]).slice(0,2).map(t=>BADGE[t]?`<span class="badge ${BADGE[t].cls}">${BADGE[t].txt}</span>`:'').join('');
+    const names=Array.isArray(p.service_names)?p.service_names:[];
+    const waMsg=encodeURIComponent(`Hi! I'd like to book:\n\n*${p.package_name}*\n${names.join(', ')}\nDuration: ${p.total_duration_minutes} min\nPrice: ₹${p.final_price.toLocaleString('en-IN')} (Save ${p.discount_percent}%)\n\nPlease confirm. 🙏`);
+    return `<div class="pkg glass-card${isPremium?' premium-card':''}">
       <div class="pkg-top">
-        ${badges ? `<div class="pkg-badges">${badges}</div>` : ''}
+        ${badges?`<div class="pkg-badges">${badges}</div>`:''}
         <div class="pkg-name glass-text">${p.package_name}</div>
-        <div class="pkg-tagline">${b?.tagline || ''}</div>
-        <div class="pkg-chips">${names.map(n => `<span class="pkg-chip">${n}</span>`).join('')}</div>
+        <div class="pkg-tagline">${b?.tagline||''}</div>
+        <div class="pkg-chips">${names.map(n=>`<span class="pkg-chip">${n}</span>`).join('')}</div>
       </div>
       <div class="pkg-bot">
         <div>
@@ -645,72 +728,89 @@ function renderPkg() {
     </div>`;
   }).join('');
 }
-window.filterPkg = function(cat, btn) {
-  pkgCat = cat;
-  document.querySelectorAll('#pkgFilters .chip').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+window.filterPkg=function(cat,btn){
+  pkgCat=cat;
+  syncChips('#pkgFilters','fp-packages',btn);
   renderPkg();
-}
+};
 
-function renderMem() {
-  const pill = document.getElementById('tierPill');
-  const info = TIER_INFO[memTier] || {icon:'•', txt:''};
-  pill.dataset.tier = memTier;
-  document.getElementById('tierPillIcon').textContent = info.icon;
-  document.getElementById('tierPillText').textContent  = info.txt;
-  const grid = document.getElementById('membershipsGrid');
-  const list = allMem.filter(m => m.tier === memTier);
-  if (!list.length) { grid.innerHTML = `<div class="empty"><div class="ei">💳</div><h3>No plans</h3></div>`; return; }
-  grid.innerHTML = list.map(m => {
-    const waMsg = encodeURIComponent(`Hi! Interested in:\n\n*${m.membership_name}*\n${m.brochure_line}\nDuration: ${m.duration_months} month(s)\nPrice: ₹${m.price.toLocaleString('en-IN')}` + (m.wallet_credits > 0 ? `\nWallet: ₹${m.wallet_credits}` : '') + (m.bonus_description ? `\nBonus: ${m.bonus_description}` : '') + `\n\nPlease help me enroll. 🙏`);
+/* ── RENDER: SERVICES ── */
+function renderSvc(){
+  const grid=document.getElementById('servicesGrid');
+  const list=svcCat==='all'?allSvc:allSvc.filter(s=>getSvcCat(s.service_name)===svcCat);
+  if(!list.length){grid.innerHTML=`<div class="empty"><div class="ei">🔍</div><h3>Nothing here</h3></div>`;return;}
+  grid.innerHTML=list.map(s=>`
+    <div class="svc glass-card">
+      <div class="svc-ico">${CAT_ICONS[getSvcCat(s.service_name)]||'✂️'}</div>
+      <div class="svc-info">
+        <div class="svc-name">${s.service_name}</div>
+        <div class="svc-dur">⏱ ${s.duration_minutes} min</div>
+      </div>
+      <div class="svc-price">₹${s.price.toLocaleString('en-IN')}</div>
+    </div>`).join('');
+}
+window.filterSvc=function(cat,btn){
+  svcCat=cat;
+  syncChips('#svcFilters','fp-services',btn);
+  renderSvc();
+};
+
+/* ── RENDER: MEMBERSHIPS ── */
+function renderMem(){
+  const pill=document.getElementById('tierPill');
+  const info=TIER_INFO[memTier]||{icon:'•',txt:''};
+  pill.dataset.tier=memTier;
+  document.getElementById('tierPillIcon').textContent=info.icon;
+  document.getElementById('tierPillText').textContent=info.txt;
+  const grid=document.getElementById('membershipsGrid');
+  const list=allMem.filter(m=>m.tier===memTier);
+  if(!list.length){grid.innerHTML=`<div class="empty"><div class="ei">💳</div><h3>No plans</h3></div>`;return;}
+  grid.innerHTML=list.map(m=>{
+    const waMsg=encodeURIComponent(`Hi! Interested in:\n\n*${m.membership_name}*\n${m.brochure_line}\nDuration: ${m.duration_months} month(s)\nPrice: ₹${m.price.toLocaleString('en-IN')}`+(m.wallet_credits>0?`\nWallet: ₹${m.wallet_credits}`:'')+( m.bonus_description?`\nBonus: ${m.bonus_description}`:'')+`\n\nPlease help me enroll. 🙏`);
     return `<div class="mem glass-card" data-tier="${m.tier}">
       <div class="mem-in">
-        <div class="mem-dur">${m.duration_months} Month${m.duration_months > 1 ? 's' : ''}</div>
+        <div class="mem-dur">${m.duration_months} Month${m.duration_months>1?'s':''}</div>
         <div class="mem-name glass-text">${m.membership_name}</div>
         <div class="mem-line">${m.brochure_line}</div>
         <div class="mem-tags">
-          ${m.wallet_credits > 0 ? `<span class="mtag mtag-w">💳 ₹${m.wallet_credits.toLocaleString('en-IN')} Wallet</span>` : ''}
-          ${m.bonus_description  ? `<span class="mtag mtag-b">🎁 ${m.bonus_description}</span>` : ''}
+          ${m.wallet_credits>0?`<span class="mtag mtag-w">💳 ₹${m.wallet_credits.toLocaleString('en-IN')} Wallet</span>`:''}
+          ${m.bonus_description?`<span class="mtag mtag-b">🎁 ${m.bonus_description}</span>`:''}
           <span class="mtag mtag-f">For: ${m.best_for}</span>
         </div>
       </div>
       <div class="mem-bot">
         <div>
           <div class="mem-price">₹${m.price.toLocaleString('en-IN')}</div>
-          <div class="mem-per">≈ ₹${Math.round(m.price / m.duration_months).toLocaleString('en-IN')}/month</div>
+          <div class="mem-per">≈ ₹${Math.round(m.price/m.duration_months).toLocaleString('en-IN')}/month</div>
         </div>
         <button class="sel-btn" onclick="window.open('https://wa.me/${WA_NUM}?text=${waMsg}','_blank')">💬 Enroll</button>
       </div>
     </div>`;
   }).join('');
 }
-window.filterMem = function(tier, btn) {
-  memTier = tier;
-  document.querySelectorAll('.tier-chip').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+window.filterMem=function(tier,btn){
+  memTier=tier;
+  syncTierChips(btn);
   renderMem();
-}
+};
 
-function renderCustom() {
-  const container = document.getElementById('customList');
-  if (!allSvc.length) { container.innerHTML = `<div class="empty"><div class="ei">⚡</div><h3>No services loaded</h3></div>`; return; }
-  const grouped = {};
-  CAT_ORDER.forEach(c => grouped[c] = []);
-  grouped['other'] = [];
-  allSvc.forEach(s => {
-    const c = getSvcCat(s.service_name);
-    if (!grouped[c]) grouped[c] = [];
-    grouped[c].push(s);
-  });
-  let html = '';
-  [...CAT_ORDER, 'other'].forEach(cat => {
-    if (!grouped[cat]?.length) return;
-    html += `<div class="cat-label">${CAT_LABELS[cat] || cat}</div><div class="cust-list">`;
-    grouped[cat].forEach(s => {
-      const sel = picked.has(s.id);
-      html += `<div class="ci glass-card${sel ? ' sel' : ''}" onclick="togglePick(${s.id})" id="ci-${s.id}">
-        <div class="ci-cb">${sel ? '✓' : ''}</div>
-        <span class="ci-ico">${CAT_ICONS[cat] || '✂️'}</span>
+/* ── RENDER: CUSTOM ── */
+function renderCustom(){
+  const container=document.getElementById('customList');
+  if(!allSvc.length){container.innerHTML=`<div class="empty"><div class="ei">⚡</div><h3>No services loaded</h3></div>`;return;}
+  const grouped={};
+  CAT_ORDER.forEach(c=>grouped[c]=[]);
+  grouped['other']=[];
+  allSvc.forEach(s=>{const c=getSvcCat(s.service_name);(grouped[c]||(grouped[c]=[])).push(s);});
+  let html='';
+  [...CAT_ORDER,'other'].forEach(cat=>{
+    if(!grouped[cat]?.length)return;
+    html+=`<div class="cat-label">${CAT_LABELS[cat]||cat}</div><div class="cust-list">`;
+    grouped[cat].forEach(s=>{
+      const sel=picked.has(s.id);
+      html+=`<div class="ci glass-card${sel?' sel':''}" onclick="togglePick(${s.id})" id="ci-${s.id}">
+        <div class="ci-cb">${sel?'✓':''}</div>
+        <span class="ci-ico">${CAT_ICONS[cat]||'✂️'}</span>
         <div class="ci-name">${s.service_name}</div>
         <div class="ci-right">
           <div class="ci-price">₹${s.price.toLocaleString('en-IN')}</div>
@@ -718,93 +818,88 @@ function renderCustom() {
         </div>
       </div>`;
     });
-    html += `</div>`;
+    html+=`</div>`;
   });
-  container.innerHTML = html;
+  container.innerHTML=html;
 }
 
-window.togglePick = function(id) {
-  const el = document.getElementById('ci-' + id);
-  if (picked.has(id)) { picked.delete(id); el.classList.remove('sel'); el.querySelector('.ci-cb').textContent = ''; }
-  else { picked.add(id); el.classList.add('sel'); el.querySelector('.ci-cb').textContent = '✓'; }
+window.togglePick=function(id){
+  const el=document.getElementById('ci-'+id);
+  if(picked.has(id)){picked.delete(id);el.classList.remove('sel');el.querySelector('.ci-cb').textContent='';}
+  else              {picked.add(id);   el.classList.add('sel');   el.querySelector('.ci-cb').textContent='✓';}
   updateCustBar();
+};
+
+function updateCustBar(){
+  const sel=allSvc.filter(s=>picked.has(s.id));
+  const total=sel.reduce((a,s)=>a+s.price,0);
+  const dur=sel.reduce((a,s)=>a+s.duration_minutes,0);
+  const n=sel.length;
+  document.getElementById('custCount').textContent=n===0?'No services selected':`${n} service${n>1?'s':''} selected`;
+  document.getElementById('custTotal').textContent='₹'+total.toLocaleString('en-IN');
+  document.getElementById('custDur').textContent=dur>0?`⏱ ${dur} min`:'';
+  document.getElementById('waBtn').disabled=n===0;
+  const fp=document.getElementById('floatPickCount');
+  if(fp) fp.textContent=n===0?'Pick services below ↓':`${n} selected · ₹${total.toLocaleString('en-IN')}`;
 }
 
-function updateCustBar() {
-  const sel = allSvc.filter(s => picked.has(s.id));
-  const total = sel.reduce((a, s) => a + s.price, 0);
-  const dur   = sel.reduce((a, s) => a + s.duration_minutes, 0);
-  const n     = sel.length;
-  document.getElementById('custCount').textContent = n === 0 ? 'No services selected' : `${n} service${n > 1 ? 's' : ''} selected`;
-  document.getElementById('custTotal').textContent = '₹' + total.toLocaleString('en-IN');
-  document.getElementById('custDur').textContent   = dur > 0 ? `⏱ ${dur} min` : '';
-  document.getElementById('waBtn').disabled = n === 0;
+window.sendWA=function(){
+  const sel=allSvc.filter(s=>picked.has(s.id));
+  if(!sel.length)return;
+  const total=sel.reduce((a,s)=>a+s.price,0);
+  const dur=sel.reduce((a,s)=>a+s.duration_minutes,0);
+  const lines=sel.map(s=>`  • ${s.service_name} — ₹${s.price.toLocaleString('en-IN')}`).join('\n');
+  const msg=`Hi! I'd like to book a custom session:\n\n${lines}\n\nTotal: ₹${total.toLocaleString('en-IN')}\nDuration: ${dur} min\n\nPlease confirm my slot. 🙏`;
+  window.open(`https://wa.me/${WA_NUM}?text=${encodeURIComponent(msg)}`,'_blank');
+};
+
+/* ── FADE ANIMATIONS ── */
+function initScrollAnimations(){
+  const obs=new IntersectionObserver(
+    entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),
+    {threshold:0}
+  );
+  document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
 }
 
-window.sendWA = function() {
-  const sel = allSvc.filter(s => picked.has(s.id));
-  if (!sel.length) return;
-  const total = sel.reduce((a, s) => a + s.price, 0);
-  const dur   = sel.reduce((a, s) => a + s.duration_minutes, 0);
-  const lines = sel.map(s => `  • ${s.service_name} — ₹${s.price.toLocaleString('en-IN')}`).join('\n');
-  const msg = `Hi! I'd like to book a custom session:\n\n${lines}\n\nTotal: ₹${total.toLocaleString('en-IN')}\nDuration: ${dur} min\n\nPlease confirm my slot. 🙏`;
-  window.open(`https://wa.me/${WA_NUM}?text=${encodeURIComponent(msg)}`, '_blank');
-}
-
-function initScrollAnimations() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-  }, { threshold: 0 });
-  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-}
-
-function scrollToSection(id) {
-  const el = document.getElementById(id);
-  if (el) {
-    const y = el.getBoundingClientRect().top + window.scrollY - 80;
-    window.scrollTo({top: y, behavior: 'smooth'});
-  }
-}
-
-function initScrollSpy() {
-  const sections = document.querySelectorAll('.section-container, #custom');
-  const navLinks = document.querySelectorAll('.nav-btn');
-  window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(section => {
-      if (window.scrollY >= section.offsetTop - 150) current = section.getAttribute('id');
-    });
-    navLinks.forEach(link => {
-      link.classList.remove('active');
-      if (link.getAttribute('onclick') && link.getAttribute('onclick').includes(current)) {
-        link.classList.add('active');
-      }
-    });
+/* ── DATA FETCH ── */
+async function fetchAllData(){
+  const res=await fetch(`${SUPA_URL}/rest/v1/rpc/website_brochure_get_data`,{
+    method:'POST',
+    headers:{'Content-Type':'application/json','apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY},
+    body:JSON.stringify({})
   });
+  if(!res.ok)throw new Error(`RPC error ${res.status}: ${await res.text()}`);
+  return res.json();
 }
 
-let WA_NUM = '15551547992';
-
-async function init() {
-  try {
-    const data = await fetchAllData();
-    allSvc = data.services    || [];
-    allPkg = data.packages    || [];
-    allMem = data.memberships || [];
-    if (data.settings && data.settings.bot_whatsapp_number) WA_NUM = data.settings.bot_whatsapp_number;
-    const urlParams = new URLSearchParams(window.location.search);
-    WA_NUM = urlParams.get('bot') || urlParams.get('phone') || WA_NUM;
-    renderSvc(); renderPkg(); renderMem(); renderCustom();
-    setTimeout(() => { initScrollAnimations(); initScrollSpy(); }, 100);
-  } catch (e) {
+async function init(){
+  try{
+    const data=await fetchAllData();
+    allSvc=data.services||[];
+    allPkg=data.packages||[];
+    allMem=data.memberships||[];
+    if(data.settings?.bot_whatsapp_number) WA_NUM=data.settings.bot_whatsapp_number;
+    const params=new URLSearchParams(window.location.search);
+    WA_NUM=params.get('bot')||params.get('phone')||WA_NUM;
+    renderSvc();renderPkg();renderMem();renderCustom();
+    setTimeout(()=>{
+      initScrollAnimations();
+      initFilterObserver();
+      // Initial float-bar panel = packages
+      showFloatPanel('packages');
+    },150);
+  }catch(e){
     console.error(e);
-    ['servicesGrid','packagesGrid','membershipsGrid','customList'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.innerHTML = `<div class="empty"><div class="ei">⚠️</div><h3>Load failed</h3><p>${e.message}</p></div>`;
+    ['servicesGrid','packagesGrid','membershipsGrid','customList'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el) el.innerHTML=`<div class="empty"><div class="ei">⚠️</div><h3>Load failed</h3><p>${e.message}</p></div>`;
     });
   }
 }
 
+// Also refresh on scroll for section tracking
+window.addEventListener('scroll',refreshFloatBar,{passive:true});
 init();
 </script>
 </body>
