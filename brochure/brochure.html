@@ -606,7 +606,7 @@ let WA_NUM = '15551547992';
 let allSvc=[], allPkg=[], allMem=[];
 let svcCat='all', pkgCat='all', memTier='essential';
 let picked=new Set();
-let bookingPkg=null, bookingDate=null, bookingSlot=null, salonSettings=null;
+let bookingPkg=null, bookingDate=null, bookingSlot=null, salonSettings=null, bookedSlots=[];
 
 const CAT_MAP={
   hair: ['Hair Spa','Hair Color','Head Oil Massage','Head Wash','Wash + Dryer','Hair Straightening','Hair Cut','Hair Smoothening','Scalp Treatment','Hair Protein Treatment','Keratin Treatment'],
@@ -967,14 +967,33 @@ function renderBookingSlots(){
   const now=new Date();
   const nowM=diff===0?now.getHours()*60+now.getMinutes()+15:-1;
 
+  // Pre-compute booked ranges for this date as minutes-of-day pairs
+  const bookedRanges=bookedSlots.map(b=>{
+    const s=new Date(b.start_time), e=new Date(b.end_time);
+    const sd=new Date(s); sd.setHours(0,0,0,0);
+    if(sd.getTime()!==bd.getTime())return null;
+    return{s:s.getHours()*60+s.getMinutes(), e:e.getHours()*60+e.getMinutes()};
+  }).filter(Boolean);
+
+  function isConflict(slotStart,slotDur){
+    const slotEnd=slotStart+slotDur;
+    return bookedRanges.some(r=>slotStart<r.e && slotEnd>r.s);
+  }
+
   const slots=[];
   for(let m=openM;m+durM<=closeM;m+=interval){
     const h=Math.floor(m/60),min=m%60;
     const ampm=h>=12?'PM':'AM', h12=h>12?h-12:h===0?12:h;
-    slots.push({m,label:`${h12}:${String(min).padStart(2,'0')} ${ampm}`,past:diff===0&&m<=nowM});
+    const booked=isConflict(m,durM);
+    slots.push({m,label:`${h12}:${String(min).padStart(2,'0')} ${ampm}`,past:diff===0&&m<=nowM,booked});
   }
   if(!slots.length){container.innerHTML=`<div class="bm-closed">No slots available</div>`;return;}
-  container.innerHTML=slots.map(sl=>`<button class="bm-slot${sl.past?' bm-slot-past':''}${bookingSlot===sl.m?' sel':''}" data-m="${sl.m}" ${sl.past?'disabled':`onclick="selectSlot(${sl.m})"`}>${sl.label}</button>`).join('');
+  container.innerHTML=slots.map(sl=>{
+    const disabled=sl.past||sl.booked;
+    const cls=`bm-slot${bookingSlot===sl.m?' sel':''}`;
+    const label=sl.booked?`${sl.label}<br><span style="font-size:0.65rem;opacity:0.7">Booked</span>`:sl.label;
+    return`<button class="${cls}" data-m="${sl.m}" ${disabled?'disabled':`onclick="selectSlot(${sl.m})"`}>${label}</button>`;
+  }).join('');
 }
 
 function renderBookingModal(){
@@ -1043,6 +1062,7 @@ async function init(){
     allPkg=data.packages||[];
     allMem=data.memberships||[];
     salonSettings=data.settings||{};
+    bookedSlots=data.booked_slots||[];
     if(salonSettings.bot_whatsapp_number) WA_NUM=salonSettings.bot_whatsapp_number;
     const params=new URLSearchParams(window.location.search);
     WA_NUM=params.get('bot')||params.get('phone')||WA_NUM;
