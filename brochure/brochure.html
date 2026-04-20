@@ -420,6 +420,32 @@ h1,h2,h3 { font-family: var(--font-heading); font-weight: 700; }
 .empty .ei { font-size: 3.5rem; margin-bottom: 15px; }
 .empty h3  { font-size: 1.2rem; color: var(--ink2); margin-bottom: 5px; }
 
+/* ── BOOKING MODAL ── */
+.bm-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s;}
+.bm-overlay.open{opacity:1;pointer-events:auto;}
+.bm-sheet{background:#13131a;border:1px solid var(--bg3);border-radius:20px 20px 0 0;width:100%;max-width:520px;max-height:85dvh;display:flex;flex-direction:column;transform:translateY(100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);overflow:hidden;}
+.bm-overlay.open .bm-sheet{transform:translateY(0);}
+.bm-handle{width:40px;height:4px;background:var(--bg3);border-radius:2px;margin:10px auto 0;flex-shrink:0;}
+.bm-hdr{padding:16px 20px 12px;border-bottom:1px solid var(--bg3);display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-shrink:0;}
+.bm-pkg-name{font-family:var(--font-heading);font-size:1.1rem;font-weight:700;color:var(--ink);}
+.bm-pkg-dur{font-size:0.82rem;color:var(--ink3);margin-top:3px;}
+.bm-close{background:none;border:none;color:var(--ink3);font-size:1.4rem;cursor:pointer;line-height:1;padding:0;flex-shrink:0;}
+.bm-close:hover{color:var(--ink);}
+.bm-date-row{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--bg3);flex-shrink:0;}
+.bm-date-label{font-family:var(--font-heading);font-size:1rem;font-weight:600;color:var(--ink);}
+.bm-date-btn{background:var(--card);border:1px solid var(--bg3);color:var(--ink2);padding:7px 14px;border-radius:20px;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:var(--font-heading);transition:all 0.18s;}
+.bm-date-btn:hover{border-color:var(--gold);color:var(--gold);}
+.bm-slots-wrap{flex:1;overflow-y:auto;padding:16px 20px;scrollbar-width:thin;scrollbar-color:var(--bg3) transparent;}
+.bm-slots{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.bm-slot{background:var(--card);border:1px solid var(--bg3);color:var(--ink2);padding:10px 4px;border-radius:10px;font-size:0.82rem;font-weight:600;cursor:pointer;font-family:var(--font-heading);transition:all 0.18s;text-align:center;}
+.bm-slot:hover:not(:disabled){border-color:var(--gold);color:var(--gold);}
+.bm-slot.sel{background:var(--gold);border-color:var(--gold);color:#000;box-shadow:0 0 10px var(--gold-glow);}
+.bm-slot:disabled{opacity:0.3;cursor:not-allowed;}
+.bm-closed{text-align:center;padding:40px 20px;color:var(--ink3);font-size:0.95rem;grid-column:1/-1;}
+.bm-footer{padding:14px 20px;border-top:1px solid var(--bg3);background:rgba(0,0,0,0.3);flex-shrink:0;}
+.bm-confirm{width:100%;background:var(--gold);color:#000;border:none;padding:14px;border-radius:25px;font-size:1rem;font-weight:700;cursor:pointer;font-family:var(--font-heading);transition:all 0.2s;box-shadow:0 4px 15px var(--gold-glow);}
+.bm-confirm:hover:not(:disabled){background:#e5c158;transform:translateY(-2px);}
+.bm-confirm:disabled{background:rgba(255,255,255,0.1);color:var(--ink3);cursor:not-allowed;box-shadow:none;transform:none;}
 footer { text-align: center; padding: 40px 20px; background: #050506; color: var(--ink3); font-size: 0.9rem; border-top: 1px solid var(--bg3); }
 
 .fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
@@ -544,6 +570,30 @@ footer { text-align: center; padding: 40px 20px; background: #050506; color: var
   <div id="customList" class="fade-up"><div class="loading-box"><div class="spinner"></div>Loading…</div></div>
 </div>
 
+<!-- ══ BOOKING MODAL ══ -->
+<div class="bm-overlay" id="bookingModal" onclick="if(event.target===this)closeBookingModal()">
+  <div class="bm-sheet">
+    <div class="bm-handle"></div>
+    <div class="bm-hdr">
+      <div>
+        <div class="bm-pkg-name" id="bm-pkg-name"></div>
+        <div class="bm-pkg-dur"  id="bm-pkg-dur"></div>
+      </div>
+      <button class="bm-close" onclick="closeBookingModal()">✕</button>
+    </div>
+    <div class="bm-date-row">
+      <div class="bm-date-label" id="bm-date-label"></div>
+      <button class="bm-date-btn" onclick="showDatePicker()">📅 Change Date</button>
+      <input type="date" id="bm-date-input" style="position:absolute;opacity:0;pointer-events:none;width:0;height:0;" oninput="onDateInput(this.value)">
+    </div>
+    <div class="bm-slots-wrap">
+      <div class="bm-slots" id="bm-slots"></div>
+    </div>
+    <div class="bm-footer">
+      <button class="bm-confirm" id="bm-confirm" onclick="confirmBooking()" disabled>Confirm via WhatsApp 💬</button>
+    </div>
+  </div>
+</div>
 <footer><p>&copy; 2026 The Studio. All rights reserved.</p></footer>
 
 <script>
@@ -556,6 +606,7 @@ let WA_NUM = '15551547992';
 let allSvc=[], allPkg=[], allMem=[];
 let svcCat='all', pkgCat='all', memTier='essential';
 let picked=new Set();
+let bookingPkg=null, bookingDate=null, bookingSlot=null, salonSettings=null;
 
 const CAT_MAP={
   hair: ['Hair Spa','Hair Color','Head Oil Massage','Head Wash','Wash + Dryer','Hair Straightening','Hair Cut','Hair Smoothening','Scalp Treatment','Hair Protein Treatment','Keratin Treatment'],
@@ -724,7 +775,7 @@ function renderPkg(){
           <div class="pkg-save">Save ${p.discount_percent}%</div>
           <div class="pkg-dur">⏱ ${p.total_duration_minutes} min</div>
         </div>
-        <button class="sel-btn" onclick="window.open('https://wa.me/${WA_NUM}?text=${waMsg}','_blank')">💬 Book</button>
+        <button class="sel-btn" onclick="openBooking(${p.id})">💬 Book</button>
       </div>
     </div>`;
   }).join('');
@@ -882,13 +933,117 @@ async function fetchAllData(){
   return res.json();
 }
 
+/* ── BOOKING MODAL LOGIC ── */
+function toDateStr(d){return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+
+function isOffDay(date){
+  const s=salonSettings; if(!s)return false;
+  if(s.weekly_off_days){
+    const dn=date.getDay();
+    const name=['sunday','monday','tuesday','wednesday','thursday','friday','saturday'][dn];
+    const off=s.weekly_off_days.toLowerCase().split(/[\s,]+/).map(x=>x.trim()).filter(Boolean);
+    if(off.includes(name)||off.includes(String(dn)))return true;
+  }
+  if(Array.isArray(s.off_dates)){
+    if(s.off_dates.includes(toDateStr(date)))return true;
+  }
+  return false;
+}
+
+function renderBookingSlots(){
+  const container=document.getElementById('bm-slots');
+  const p=bookingPkg;
+  const bd=new Date(bookingDate); bd.setHours(0,0,0,0);
+  const today=new Date(); today.setHours(0,0,0,0);
+  const diff=Math.round((bd-today)/86400000);
+
+  if(isOffDay(bd)){container.innerHTML=`<div class="bm-closed">🔒 Salon is closed on this day</div>`;return;}
+
+  const s=salonSettings||{};
+  const interval=s.slot_interval_minutes||15;
+  const [oh,om]=(s.open_time||'10:00:00').split(':').map(Number);
+  const [ch,cm]=(s.close_time||'20:00:00').split(':').map(Number);
+  const openM=oh*60+om, closeM=ch*60+cm, durM=p.total_duration_minutes||60;
+  const now=new Date();
+  const nowM=diff===0?now.getHours()*60+now.getMinutes()+15:-1;
+
+  const slots=[];
+  for(let m=openM;m+durM<=closeM;m+=interval){
+    const h=Math.floor(m/60),min=m%60;
+    const ampm=h>=12?'PM':'AM', h12=h>12?h-12:h===0?12:h;
+    slots.push({m,label:`${h12}:${String(min).padStart(2,'0')} ${ampm}`,past:diff===0&&m<=nowM});
+  }
+  if(!slots.length){container.innerHTML=`<div class="bm-closed">No slots available</div>`;return;}
+  container.innerHTML=slots.map(sl=>`<button class="bm-slot${sl.past?' bm-slot-past':''}${bookingSlot===sl.m?' sel':''}" data-m="${sl.m}" ${sl.past?'disabled':`onclick="selectSlot(${sl.m})"`}>${sl.label}</button>`).join('');
+}
+
+function renderBookingModal(){
+  const p=bookingPkg;
+  document.getElementById('bm-pkg-name').textContent=p.package_name;
+  document.getElementById('bm-pkg-dur').textContent=`⏱ ${p.total_duration_minutes} min · ₹${p.final_price.toLocaleString('en-IN')}`;
+  const bd=new Date(bookingDate); bd.setHours(0,0,0,0);
+  const today=new Date(); today.setHours(0,0,0,0);
+  const diff=Math.round((bd-today)/86400000);
+  const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const DAY=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  document.getElementById('bm-date-label').textContent=
+    diff===0?`Today, ${MON[bd.getMonth()]} ${bd.getDate()}`:
+    diff===1?`Tomorrow, ${MON[bd.getMonth()]} ${bd.getDate()}`:
+    `${DAY[bd.getDay()]}, ${MON[bd.getMonth()]} ${bd.getDate()}`;
+  renderBookingSlots();
+}
+
+window.openBooking=function(pkgId){
+  bookingPkg=allPkg.find(p=>p.id===pkgId); if(!bookingPkg)return;
+  bookingDate=new Date(); bookingSlot=null;
+  document.getElementById('bm-confirm').disabled=true;
+  const inp=document.getElementById('bm-date-input');
+  inp.min=toDateStr(new Date()); inp.value=toDateStr(bookingDate);
+  renderBookingModal();
+  document.getElementById('bookingModal').classList.add('open');
+};
+window.closeBookingModal=function(){document.getElementById('bookingModal').classList.remove('open');};
+window.showDatePicker=function(){
+  const inp=document.getElementById('bm-date-input');
+  inp.showPicker?inp.showPicker():inp.click();
+};
+window.onDateInput=function(val){
+  if(!val)return;
+  const[y,m,d]=val.split('-').map(Number);
+  bookingDate=new Date(y,m-1,d);
+  bookingSlot=null;
+  document.getElementById('bm-confirm').disabled=true;
+  renderBookingModal();
+};
+window.selectSlot=function(m){
+  bookingSlot=m;
+  document.querySelectorAll('.bm-slot').forEach(b=>b.classList.toggle('sel',parseInt(b.dataset.m)===m));
+  document.getElementById('bm-confirm').disabled=false;
+};
+window.confirmBooking=function(){
+  if(bookingSlot===null)return;
+  const p=bookingPkg;
+  const names=Array.isArray(p.service_names)?p.service_names:[];
+  const bd=new Date(bookingDate); bd.setHours(0,0,0,0);
+  const DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const h=Math.floor(bookingSlot/60),m=bookingSlot%60;
+  const ampm=h>=12?'PM':'AM', h12=h>12?h-12:h===0?12:h;
+  const timeLabel=`${h12}:${String(m).padStart(2,'0')} ${ampm}`;
+  const dateLabel=`${DAYS[bd.getDay()]}, ${bd.getDate()} ${MONTHS[bd.getMonth()]} ${bd.getFullYear()}`;
+  const msg=`Hi! I'd like to book:\n\n*${p.package_name}*\n${names.join(', ')}\nDuration: ${p.total_duration_minutes} min\nPrice: ₹${p.final_price.toLocaleString('en-IN')} (Save ${p.discount_percent}%)\n\n📅 Date: ${dateLabel}\n⏰ Time: ${timeLabel}\n\nPlease confirm my slot. 🙏`;
+  window.open(`https://wa.me/${WA_NUM}?text=${encodeURIComponent(msg)}`,'_blank');
+  closeBookingModal();
+};
+
 async function init(){
   try{
     const data=await fetchAllData();
     allSvc=data.services||[];
     allPkg=data.packages||[];
     allMem=data.memberships||[];
-    if(data.settings?.bot_whatsapp_number) WA_NUM=data.settings.bot_whatsapp_number;
+    salonSettings=data.settings||{};
+    if(salonSettings.bot_whatsapp_number) WA_NUM=salonSettings.bot_whatsapp_number;
     const params=new URLSearchParams(window.location.search);
     WA_NUM=params.get('bot')||params.get('phone')||WA_NUM;
     renderSvc();renderPkg();renderMem();renderCustom();
